@@ -13,3 +13,4 @@ basarimapp/database.ini
 htmlcov/
 
 *.egg-info/
+/basarimapp/database_handler.py

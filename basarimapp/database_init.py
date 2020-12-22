@@ -1,8 +1,11 @@
 from configparser import ConfigParser
 import psycopg2
 import os
-print(os.getcwd())
-DB_INITIAL_QUERY = open("basarimapp/db_structure.sql", "r").read()
+
+curdir = os.getcwd()
+fn = os.path.join(curdir, "db_structure.sql")
+ini_file_path = os.path.join(curdir, "database.ini")
+DB_INITIAL_QUERY = open(fn, "r").read()
 TABLE_NAMES = ["USERROLE", "EXAM", "EXAMFIELD", "RESULT", "FIELDRESULT", "ANSWERSHEET"]
 
 
@@ -23,7 +26,7 @@ def get_params(filename, section):
     return db
 
 
-def del_db(filename="basarimapp/database.ini", section="postgresql"):
+def del_db(filename=ini_file_path, section="postgresql"):
 
     db = get_params(filename, section)
     with psycopg2.connect(**db) as conn:
@@ -33,7 +36,7 @@ def del_db(filename="basarimapp/database.ini", section="postgresql"):
     cur.close()
 
 
-def init_db(filename="basarimapp/database.ini", section="postgresql"):
+def init_db(filename=ini_file_path, section="postgresql"):
 
     del_db()
     db = get_params(filename, section)
