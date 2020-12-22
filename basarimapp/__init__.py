@@ -22,5 +22,6 @@ def create_app(test_config=None):
     # add url rules
     app.add_url_rule("/", view_func=views.index)
     app.add_url_rule("/login", view_func=views.login, methods=["GET","POST"])
+    app.add_url_rule("/register", view_func=views.register, methods=["GET","POST"])
 
     return app

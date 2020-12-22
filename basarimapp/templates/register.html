@@ -1,0 +1,23 @@
+ {% extends 'layout.html' %}
+{% block title %}
+Register
+{% endblock %}
+
+{% block header %}
+<h1>Join Us!</h1>
+{% endblock %}
+
+{% from "macro.html" import render_field %}
+
+{% block content %}
+<form id="loginForm" class="form form-register" method="POST" action="" role="form">
+    {{ form.hidden_tag() }}
+    {{ render_field(form.first_name, placeholder="Name") }}
+    {{ render_field(form.last_name, placeholder="Surname") }}
+    {{ render_field(form.email, placeholder="Email") }}
+    {{ render_field(form.password, placeholder="Password") }}
+    {{ render_field(form.confirm, placeholder="Password (again)") }}
+    <p><input class="btn btn-default btn-submit" type="submit" value="Login"></p>
+</form>
+
+{% endblock %}
