@@ -1,4 +1,6 @@
 from flask import Flask
+from .database_init import init_db
+import basarimapp.views
 import os
 
 
@@ -15,9 +17,9 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/')
-    def hello():
-        return 'Index page will be here!!'
+    # init_db()  # restarts database
+
+    # add url rules
+    app.add_url_rule("/", view_func=views.index)
 
     return app

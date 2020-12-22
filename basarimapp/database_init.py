@@ -1,7 +1,8 @@
 from configparser import ConfigParser
 import psycopg2
-
-DB_INITIAL_QUERY = open("db_structure.sql", "r").read()
+import os
+print(os.getcwd())
+DB_INITIAL_QUERY = open("basarimapp/db_structure.sql", "r").read()
 TABLE_NAMES = ["USERROLE", "EXAM", "EXAMFIELD", "RESULT", "FIELDRESULT", "ANSWERSHEET"]
 
 
@@ -22,16 +23,7 @@ def get_params(filename, section):
     return db
 
 
-def init_db(filename="database.ini", section="postgresql"):
-
-    db = get_params(filename, section)
-    with psycopg2.connect(**db) as conn:
-        cur = conn.cursor()
-        cur.execute(DB_INITIAL_QUERY)
-    cur.close()
-
-
-def del_db(filename="database.ini", section="postgresql"):
+def del_db(filename="basarimapp/database.ini", section="postgresql"):
 
     db = get_params(filename, section)
     with psycopg2.connect(**db) as conn:
@@ -39,6 +31,17 @@ def del_db(filename="database.ini", section="postgresql"):
         for table in TABLE_NAMES:
             cur.execute(f"DROP TABLE IF EXISTS {table} CASCADE")
     cur.close()
+
+
+def init_db(filename="basarimapp/database.ini", section="postgresql"):
+
+    del_db()
+    db = get_params(filename, section)
+    with psycopg2.connect(**db) as conn:
+        cur = conn.cursor()
+        cur.execute(DB_INITIAL_QUERY)
+    cur.close()
+
 
 
 if __name__ == "__main__":
