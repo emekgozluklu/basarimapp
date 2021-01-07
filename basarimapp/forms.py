@@ -52,4 +52,5 @@ class RegisterForm(FlaskForm):
         if user:
             self.email.errors.append("Email already registered")
             return False
-        return True"""
+        return True
+    """

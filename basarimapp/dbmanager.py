@@ -1,6 +1,8 @@
 from configparser import ConfigParser
+from flask import current_app
 import psycopg2
 import os
+
 
 curdir = os.getcwd()
 fn = os.path.join(curdir, "db_structure.sql")
@@ -26,25 +28,27 @@ def get_params(filename, section):
     return db
 
 
-def del_db(filename=ini_file_path, section="postgresql"):
+def del_db():
 
-    db = get_params(filename, section)
-    with psycopg2.connect(**db) as conn:
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
         cur = conn.cursor()
         for table in TABLE_NAMES:
             cur.execute(f"DROP TABLE IF EXISTS {table} CASCADE")
     cur.close()
 
 
-def init_db(filename=ini_file_path, section="postgresql"):
+def init_db(override=False):
 
-    del_db()
-    db = get_params(filename, section)
-    with psycopg2.connect(**db) as conn:
+    if override:
+        del_db()
+
+    url = current_app.config['DATABASE']
+
+    with psycopg2.connect(url) as conn:
         cur = conn.cursor()
         cur.execute(DB_INITIAL_QUERY)
     cur.close()
-
 
 
 if __name__ == "__main__":

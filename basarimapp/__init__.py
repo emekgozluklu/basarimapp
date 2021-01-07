@@ -1,23 +1,25 @@
+from decouple import config
 from flask import Flask
-from .database_init import init_db
-import basarimapp.views
-import os
+from basarimapp import views
 
 
-def create_app(test_config=None):
+def create_app(cfg="DEV"):
     app = Flask(__name__)
-    app.config.from_object(os.environ['APP_SETTINGS'])
 
-    if test_config is not None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config_test.py', silent=True)
+    app.config['DEBUG'] = True
+    app.config['CSRF_ENABLED'] = True
+    app.config['SECRET_KEY'] = config('SECRET_KEY')
 
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+    if cfg == "DEV":
+        app.config['DATABASE'] = config('DATABASE_URL')
 
-    # init_db()  # restarts database
+    elif cfg == "TESTING":
+        app.config['TESTING'] = True
+        app.config['WTF_CSRF_ENABLED'] = False
+        app.config['DATABASE'] = config('TEST_DATABASE_URL')
+
+    # with app.app_context():
+    #     init_db()  # restarts database
 
     # add url rules
     app.add_url_rule("/", view_func=views.index)
