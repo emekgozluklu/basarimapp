@@ -11,23 +11,6 @@ DB_INITIAL_QUERY = open(fn, "r").read()
 TABLE_NAMES = ["USERROLE", "EXAM", "EXAMFIELD", "RESULT", "FIELDRESULT", "ANSWERSHEET"]
 
 
-def get_params(filename, section):
-    parser = ConfigParser()
-    parser.read(filename)
-
-    db = {}
-
-    if parser.has_section(section):
-        params = parser.items(section)
-        for param in params:
-            db[param[0]] = param[1]
-    else:
-        raise Exception(
-            "Section {0} not found in the {1} file".format(section, filename)
-        )
-    return db
-
-
 def del_db():
 
     url = current_app.config['DATABASE']
@@ -49,6 +32,51 @@ def init_db(override=False):
         cur = conn.cursor()
         cur.execute(DB_INITIAL_QUERY)
     cur.close()
+
+
+class DBManager:
+
+    def __init__(self):
+        self.url = current_app.config['DATABASE']
+        self.conn = psycopg2.connect(self.url)
+
+    def get_database(self):
+        if 'db' not in g:
+            g.db = dbapi2.connect(self.url)
+        return g.db
+
+    def execute_command(self, command):
+        cur = self.conn.cursor()
+        cur.execute(command)
+        res = cur.fetchall()
+        cur.close()
+        return res
+
+    def select_all(self, table_name):
+        cur = self.conn.cursor()
+        cur.execute(f"SELECT * FROM {table_name};")
+        res = cur.fetchall()
+        cur.close()
+        return res
+
+    def select(self, table_name, condition):
+        cur = self.conn.cursor()
+        cur.execute(f"SELECT * FROM {table_name} WHERE {condition};")
+        res = cur.fetchall()
+        cur.close()
+        return res
+
+    def insert(self, table_name, values):
+        cur = self.conn.cursor()
+        cur.execute(f"INSERT INTO {table_name} VALUES {values};")
+        cur.close()
+
+    @staticmethod
+    def close_db():
+        db = g.pop('db', None)
+
+        if db is not None:
+            db.close()
 
 
 if __name__ == "__main__":
