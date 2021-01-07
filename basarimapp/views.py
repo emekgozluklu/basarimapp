@@ -1,8 +1,9 @@
 from flask import render_template, redirect, url_for
 from basarimapp.forms import LoginForm, RegisterForm
+from basarimapp.dbmanager import DBManager
+from werkzeug.security import generate_password_hash
 
 # from flask_login import login_user, logout_user, current_user, login_required
-# from werkzeug.exceptions import abort
 # import password handling tools
 # import database handler class
 # import forms
@@ -27,11 +28,17 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         """
-        new_user = User(email=form.email.data,
-                username=form.username.data,
-                password=form.password.data)
-        db.session.add(new_user)
-        db.session.commit()
+        db = DBManager()
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        email = form.email.data
+        password = form.password.data
+        confirm = form.confirm.data
+        print(first_name, last_name, email, password, confirm)
+        if password != confirm:
+            return render_template('register.html', form=form, errors="Passwords not matching.")
+        # password = generate_password_hash(password)
+        db.insert("userrole", f"(DEFAULT, '{first_name}', '{last_name}', '{email}', '00000000', '{password[:15]}', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)")
         """
         return redirect(url_for('index'))
     return render_template('register.html', form=form)

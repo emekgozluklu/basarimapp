@@ -13,3 +13,5 @@ htmlcov/
 
 *.egg-info/
 /basarimapp/database_handler.py
+
+/basarimapp/static/images/

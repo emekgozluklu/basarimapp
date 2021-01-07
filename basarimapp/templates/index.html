@@ -4,9 +4,37 @@ Main Page
 {% endblock %}
 
 {% block header %}
-  <h2> Welcome to BAŞARIM application.</h2>
 {% endblock %}
 
 {% block content %}
-    Such a beautiful application. Isn't it?
+<div class="position-relative overflow-hidden p-3  m-md-3 text-center bg-dark" style="width: 100%;">
+      <div class="col-md-5 mx-auto my-5">
+          <img src="{{url_for('static', filename='images/logo.png')}}" style="width: 30%;" alt="...">
+          <h1 class="display-4  font-weight-normal" style="color:ghostwhite">başarım</h1>
+        <p class="lead font-weight-normal" style="color:ghostwhite">for those who want more.</p>
+        <a class="btn btn-outline-secondary" href="{{ url_for("register") }}" style="color:ghostwhite">Join</a>
+      </div>
+</div>
+<div class="container marketing">
+       <div class="row text-center">
+          <div class="col-lg-4">
+            <img class="rounded-circle" src="{{url_for('static', filename='images/logo.png')}}" alt="Generic placeholder image" width="140" height="140">
+            <h2>Students</h2>
+            <p>Why students should come!</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+          </div><!-- /.col-lg-4 -->
+          <div class="col-lg-4">
+            <img class="rounded-circle" src="{{url_for('static', filename='images/logo.png')}}" alt="Generic placeholder image" width="140" height="140">
+            <h2>Publisher</h2>
+            <p>Why publishers should come!</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+          </div><!-- /.col-lg-4 -->
+          <div class="col-lg-4">
+            <img class="rounded-circle" src="{{url_for('static', filename='images/logo.png')}}" alt="Generic placeholder image" width="140" height="140">
+            <h2>Publisher</h2>
+            <p>Why publishers should come!</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+          </div><!-- /.col-lg-4 -->
+       </div>
+</div>
 {% endblock %}
