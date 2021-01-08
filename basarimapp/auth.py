@@ -6,17 +6,13 @@ from basarimapp.forms import RegisterForm, LoginForm
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-"""
-@bp.before_app_request
+
 def load_logged_in_user():
     user_id = session.get('user_id')
     if user_id is None:
         g.user = None
-        g.admin_user = False
     else:
         g.user = get_user_by_id(user_id)
-        g.admin_user = g.user[6]
-"""
 
 
 @bp.route('/register', methods=('GET', 'POST'))
@@ -34,17 +30,18 @@ def register():
         password = form.password.data
         confirm = form.confirm.data
 
+        u = get_user_by_email(email)
+
         if not first_name or not last_name or not email or not password or not confirm:
             error = "Please fill all required fields."
         elif password != confirm:
             error = "Passwords do not match."
-        elif get_user_by_email(email) is None:
+        elif u is not None:
             error = "Account with given email already exists."
         if error is None:
-            password = generate_password_hash(password)
-            register_user(first_name, last_name, email, password)
+            password_hash = generate_password_hash(password)
+            register_user(first_name, last_name, email, password_hash)
             session.clear()
-            u = get_user_by_email(email)
             session["user_id"] = u[0]
             session["user_is_admin"] = False
             session["user_is_publisher"] = False

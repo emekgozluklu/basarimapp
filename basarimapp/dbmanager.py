@@ -82,6 +82,15 @@ def create_super_user(app):
                     print(f"Already exists! Email= {email}")
 
 
+def get_publishers():
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM userrole WHERE is_publisher = %s", ('true',))
+            res = cur.fetchall()
+    return res
+
+
 if __name__ == "__main__":
     print("Reinitializing database.")
     from basarimapp import create_app
