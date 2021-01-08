@@ -15,12 +15,27 @@ def load_logged_in_user():
         g.user = get_user_by_id(user_id)
 
 
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if 'user_id' not in session:
+            return redirect(url_for("index"))
+        return view(**kwargs)
+    return wrapped_view
+
+
+def logout_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if 'user_id' in session:
+            return redirect(url_for("index"))
+        return view(**kwargs)
+    return wrapped_view
+
+
 @bp.route('/register', methods=('GET', 'POST'))
+@logout_required
 def register():
-
-    if 'user_id' in session:
-        return redirect(url_for("index"))
-
     form = RegisterForm()
     error = None
     if form.validate_on_submit():
@@ -51,6 +66,7 @@ def register():
 
 
 @bp.route('/login', methods=('GET', 'POST'))
+@logout_required
 def login():
 
     if 'user_id' in session:
@@ -77,13 +93,11 @@ def login():
 
 
 @bp.route('/logout')
+@login_required
 def logout():
-    if 'user_id' in session:
-        session.clear()
-        flash("Logged out.")
-        return redirect(url_for("index"))
-
-    return redirect(url_for('index'))
+    session.clear()
+    flash("Logged out.")
+    return redirect(url_for("index"))
 
 
 """
