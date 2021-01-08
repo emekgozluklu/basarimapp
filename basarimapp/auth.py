@@ -82,7 +82,7 @@ def login():
             session.clear()
             session["user_id"] = user[0]
             session["user_is_admin"] = user[5]
-            session["user_is_publisher"] = user[6]
+            session["user_is_publisher"] = user[7]
             return redirect(url_for("index"))
     return render_template("auth/login.html", form=form, error=error)
 
