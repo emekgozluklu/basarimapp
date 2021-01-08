@@ -43,11 +43,20 @@ def register_user(first_name, last_name, email, p_hash, is_admin=False, is_publi
             ))
 
 
-def get_user(email):
+def get_user_by_email(email):
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT * FROM userrole WHERE email = %s", (email,))
+            res = cur.fetchone()
+    return res
+
+
+def get_user_by_id(uid):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM userrole WHERE id = %s", (uid,))
             res = cur.fetchone()
     return res
 
