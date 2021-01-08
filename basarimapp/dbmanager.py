@@ -34,7 +34,8 @@ def init_db(app, override=False):
                 cur.execute(DB_INITIAL_QUERY)
 
 
-def register_user(first_name, last_name, email, p_hash, is_admin=False, is_publisher=False):
+def register_user(first_name, last_name, email, password, is_admin=False, is_publisher=False):
+    p_hash = generate_password_hash(password)
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -80,6 +81,16 @@ def create_super_user(app):
                     print(f"Superuser created. Email= {email}")
                 except psycopg2.errors.UniqueViolation:
                     print(f"Already exists! Email= {email}")
+
+
+def register_publisher(pub_name, email, password, is_admin=False, is_publisher=True):
+    p_hash = generate_password_hash(password)
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute(REGISTER_USER_STATEMENT, (
+                pub_name, "", email, p_hash, is_admin, is_publisher
+            ))
 
 
 def get_publishers():

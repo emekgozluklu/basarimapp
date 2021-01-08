@@ -1,6 +1,6 @@
 import functools
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 from basarimapp.dbmanager import register_user, get_user_by_email, get_user_by_id
 from basarimapp.forms import RegisterForm, LoginForm
 
@@ -54,7 +54,6 @@ def register():
         elif u is not None:
             error = "Account with given email already exists."
         if error is None:
-            password_hash = generate_password_hash(password)
             register_user(first_name, last_name, email, password_hash)
             session.clear()
             session["user_id"] = u[0]
@@ -68,10 +67,6 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 @logout_required
 def login():
-
-    if 'user_id' in session:
-        return redirect(url_for("index"))
-
     form = LoginForm()
     error = None
     if form.validate_on_submit():
