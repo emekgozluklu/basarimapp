@@ -1,0 +1,71 @@
+ {% extends 'layout.html' %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block header %}
+<div class="container" style="margin-top: 10px;">
+  <div class="row">
+    <div class="col-md">
+        <h1>{{ g.user[1] }}'s Dashboard</h1>
+    </div>
+    <div class="col-sm">
+        <h1><a href="#"><button type="button" class="btn btn-danger align-bottom">Add New Publisher</button></a></h1>
+    </div>
+  </div>
+</div>{% endblock %}
+
+{% block content %}
+{% if error %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Whoops!</strong> {{ error }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+
+<table class="table" id="publishers" width="100%">
+
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>E-mail</th>
+            <th>Registration Date</th>
+            <th>Added Exams</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>DENEME</td>
+            <td>DENEME</td>
+            <td>DENEME</td>
+            <td>DENEME</td>
+            <td>
+                <a class="button is-link">
+                    <span class="icon is-small is-left">
+                    <i class="fa fa-thrash"></i>
+                    </span>DELETE</a>
+            </td>
+        </tr>
+    {% for pub in publishers %}
+        <tr>
+            <td>{{ pub[1] + " " + pub[2] }}</td>
+            <td>{{ pub[3] }}</td>
+            <td>{{ pub[8].strftime("%d-%m-%Y %H:%M") }}</td>
+            <td>0</td>
+            <td>
+                <a class="button is-link">
+                    <span class="icon is-small is-left">
+                    <i class="fa fa-thrash"></i>
+                    </span></a>
+            </td>
+        </tr>
+    {%endfor%}
+    </tbody>
+</table>
+
+{% endblock %}
