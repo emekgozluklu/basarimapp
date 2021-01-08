@@ -102,6 +102,16 @@ def get_publishers():
     return res
 
 
+def get_exams(pub_id):
+    # connection sessionda tutulabilir hızlandırmak için
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM exam WHERE publisher_id = %s", (pub_id,))
+            res = cur.fetchall()
+    return res
+
+
 if __name__ == "__main__":
     print("Reinitializing database.")
     from basarimapp import create_app

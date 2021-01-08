@@ -1,6 +1,6 @@
 from decouple import config
 from flask import Flask, g
-from basarimapp import views, auth, admin
+from basarimapp import views, auth, admin, publisher
 from basarimapp.dbmanager import init_db, create_super_user
 
 
@@ -28,5 +28,6 @@ def create_app(cfg="DEV"):
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(admin.bp)
+    app.register_blueprint(publisher.bp)
 
     return app
