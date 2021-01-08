@@ -10,7 +10,15 @@ Register
 {% from "macro.html" import render_field %}
 
 {% block content %}
-<form id="loginForm" class="form form-register" method="POST" action="" role="form">
+    {% if error %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Whoops!</strong> {{ error }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+{% endif %}
+<form id="loginForm" class="form form-register" method="POST" action="{{ url_for("auth.register") }}" role="form">
     {{ form.hidden_tag() }}
     {{ render_field(form.first_name, placeholder="Name") }}
     {{ render_field(form.last_name, placeholder="Surname") }}

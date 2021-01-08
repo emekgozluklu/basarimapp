@@ -10,7 +10,15 @@ LOGIN
 {% from "macro.html" import render_field %}
 
 {% block content %}
-<form id="loginForm" class="form form-login" method="POST" action="" role="form">
+    {% if error %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Whoops!</strong> {{ error }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    {% endif %}
+<form id="loginForm" class="form form-login" method="POST" action="{{ url_for("auth.login") }}" role="form">
     {{ form.hidden_tag() }}
     {{ render_field(form.email, placeholder="example@itu.edu.tr") }}<br>
     {{ render_field(form.password, placeholder="Password") }}<br>

@@ -1,6 +1,7 @@
 from decouple import config
 from flask import Flask
-from basarimapp import views
+from basarimapp import views, auth
+from basarimapp.dbmanager import init_db
 
 
 def create_app(cfg="DEV"):
@@ -18,12 +19,11 @@ def create_app(cfg="DEV"):
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['DATABASE'] = config('TEST_DATABASE_URL')
 
-    # with app.app_context():
-    #     init_db()  # restarts database
+    # init_db(app, override=True)  # restarts database
 
     # add url rules
     app.add_url_rule("/", view_func=views.index)
-    app.add_url_rule("/login", view_func=views.login, methods=["GET", "POST"])
-    app.add_url_rule("/register", view_func=views.register, methods=["GET", "POST"])
+
+    app.register_blueprint(auth.bp)
 
     return app

@@ -1,84 +1,58 @@
-from configparser import ConfigParser
 from flask import current_app
+from basarimapp import create_app
 import psycopg2
 import os
 
-
 curdir = os.getcwd()
 fn = os.path.join(curdir, "db_structure.sql")
-ini_file_path = os.path.join(curdir, "database.ini")
 DB_INITIAL_QUERY = open(fn, "r").read()
 TABLE_NAMES = ["USERROLE", "EXAM", "EXAMFIELD", "RESULT", "FIELDRESULT", "ANSWERSHEET"]
 
-
-def del_db():
-
-    url = current_app.config['DATABASE']
-    with psycopg2.connect(url) as conn:
-        cur = conn.cursor()
-        for table in TABLE_NAMES:
-            cur.execute(f"DROP TABLE IF EXISTS {table} CASCADE")
-    cur.close()
+REGISTER_USER_STATEMENT = """
+INSERT INTO userrole (first_name, last_name, email, password_hash, is_admin, is_publisher)
+VALUES (%s, %s, %s, %s, %s, %s);
+"""
 
 
-def init_db(override=False):
+def del_db(app):
+    with app.app_context():
+        url = current_app.config['DATABASE']
+        with psycopg2.connect(url) as conn:
+            with conn.cursor() as cur:
+                for table in TABLE_NAMES:
+                    cur.execute(f"DROP TABLE IF EXISTS {table} CASCADE;")
 
+
+def init_db(app, override=False):
     if override:
-        del_db()
+        del_db(app)
+    with app.app_context():
+        url = current_app.config['DATABASE']
+        with psycopg2.connect(url) as conn:
+            with conn.cursor() as cur:
+                cur.execute(DB_INITIAL_QUERY)
 
+
+def register_user(first_name, last_name, email, p_hash, is_admin=False, is_publisher=False):
     url = current_app.config['DATABASE']
-
     with psycopg2.connect(url) as conn:
-        cur = conn.cursor()
-        cur.execute(DB_INITIAL_QUERY)
-    cur.close()
+        with conn.cursor() as cur:
+            cur.execute(REGISTER_USER_STATEMENT, (
+                first_name, last_name, email, p_hash, is_admin, is_publisher
+            ))
 
 
-class DBManager:
-
-    def __init__(self):
-        self.url = current_app.config['DATABASE']
-        self.conn = psycopg2.connect(self.url)
-
-    def get_database(self):
-        if 'db' not in g:
-            g.db = dbapi2.connect(self.url)
-        return g.db
-
-    def execute_command(self, command):
-        cur = self.conn.cursor()
-        cur.execute(command)
-        res = cur.fetchall()
-        cur.close()
-        return res
-
-    def select_all(self, table_name):
-        cur = self.conn.cursor()
-        cur.execute(f"SELECT * FROM {table_name};")
-        res = cur.fetchall()
-        cur.close()
-        return res
-
-    def select(self, table_name, condition):
-        cur = self.conn.cursor()
-        cur.execute(f"SELECT * FROM {table_name} WHERE {condition};")
-        res = cur.fetchall()
-        cur.close()
-        return res
-
-    def insert(self, table_name, values):
-        cur = self.conn.cursor()
-        cur.execute(f"INSERT INTO {table_name} VALUES {values};")
-        cur.close()
-
-    @staticmethod
-    def close_db():
-        db = g.pop('db', None)
-
-        if db is not None:
-            db.close()
+def get_user(email):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM userrole WHERE email = %s", (email,))
+            res = cur.fetchone()
+    return res
 
 
 if __name__ == "__main__":
-    # del_db()
-    init_db()
+    print("Reinitializing database.")
+    app = create_app()
+    init_db(app, override=True)
+    print("Done!")
