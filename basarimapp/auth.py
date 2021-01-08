@@ -6,20 +6,23 @@ from basarimapp.forms import RegisterForm, LoginForm
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-
+"""
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
     if user_id is None:
         g.user = None
+        g.admin_user = False
     else:
         g.user = get_user_by_id(user_id)
+        g.admin_user = g.user[6]
+"""
 
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
 
-    if g.user is not None:
+    if 'user_id' in session:
         return redirect(url_for("index"))
 
     form = RegisterForm()
@@ -41,7 +44,10 @@ def register():
             password = generate_password_hash(password)
             register_user(first_name, last_name, email, password)
             session.clear()
-            session["user_id"] = get_user_by_email(email)[0]
+            u = get_user_by_email(email)
+            session["user_id"] = u[0]
+            session["user_is_admin"] = False
+            session["user_is_publisher"] = False
             return redirect(url_for("index"))
 
     return render_template('auth/register.html', form=form, error=error)
@@ -50,7 +56,7 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
 
-    if g.user is not None:
+    if 'user_id' in session:
         return redirect(url_for("index"))
 
     form = LoginForm()
@@ -67,22 +73,24 @@ def login():
         if error is None:
             session.clear()
             session["user_id"] = user[0]
+            session["user_is_admin"] = user[5]
+            session["user_is_publisher"] = user[6]
             return redirect(url_for("index"))
     return render_template("auth/login.html", form=form, error=error)
 
 
 @bp.route('/logout')
 def logout():
-
-    if g.user is None:
-        return redirect(url_for("index"))
-    else:
+    if 'user_id' in session:
         session.clear()
         flash("Logged out.")
-        return redirect(url_for('index'))
+        return redirect(url_for("index"))
+
+    return redirect(url_for('index'))
 
 
-"""def login_required(view):
+"""
+def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
