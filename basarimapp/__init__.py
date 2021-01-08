@@ -1,7 +1,7 @@
 from decouple import config
 from flask import Flask
 from basarimapp import views, auth
-from basarimapp.dbmanager import init_db
+from basarimapp.dbmanager import init_db, create_super_user
 
 
 def create_app(cfg="DEV"):
@@ -20,6 +20,8 @@ def create_app(cfg="DEV"):
         app.config['DATABASE'] = config('TEST_DATABASE_URL')
 
     # init_db(app, override=True)  # restarts database
+
+    create_super_user(app)
 
     # add url rules
     app.add_url_rule("/", view_func=views.index)

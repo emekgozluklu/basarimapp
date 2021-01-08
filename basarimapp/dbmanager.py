@@ -1,5 +1,6 @@
 from flask import current_app
-from basarimapp import create_app
+from werkzeug.security import generate_password_hash
+from decouple import config
 import psycopg2
 import os
 
@@ -51,8 +52,30 @@ def get_user(email):
     return res
 
 
+def create_super_user(app):
+    print("Creating superuser...")
+    first_name = "admin"
+    last_name = "admin"
+    is_admin = True
+    is_publisher = False
+    with app.app_context():
+        email = config("ADMIN_EMAIL")
+        p_hash = generate_password_hash(config("ADMIN_PASSWORD"))
+        url = app.config['DATABASE']
+        with psycopg2.connect(url) as conn:
+            with conn.cursor() as cur:
+                try:
+                    cur.execute(REGISTER_USER_STATEMENT, (
+                        first_name, last_name, email, p_hash, is_admin, is_publisher
+                    ))
+                    print(f"Superuser created. Email= {email}")
+                except psycopg2.errors.UniqueViolation:
+                    print(f"Already exists! Email= {email}")
+
+
 if __name__ == "__main__":
     print("Reinitializing database.")
-    app = create_app()
-    init_db(app, override=True)
+    from basarimapp import create_app
+    a = create_app()
+    init_db(a, override=True)
     print("Done!")
