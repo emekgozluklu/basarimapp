@@ -1,10 +1,10 @@
-from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
+from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 from basarimapp.dbmanager import (
-    get_user_by_email, get_exams, create_exam_template, create_examfield, activate_exam, get_publisher_of_exam,
+    get_exams, create_exam_template, create_examfield, activate_exam, get_publisher_of_exam,
     deactivate_exam
 )
 from basarimapp.auth import load_logged_in_user
-from basarimapp.forms import AddExamForm, AddExamFieldForm
+from basarimapp.forms import AddExamForm
 from basarimapp.exam import EXAM_TYPE_FIELDS, validate_exam_field_form
 import functools
 

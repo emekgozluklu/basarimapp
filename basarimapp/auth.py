@@ -1,5 +1,5 @@
 import functools
-from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
+from flask import Blueprint, flash, g, redirect, render_template, session, url_for
 from werkzeug.security import check_password_hash
 from basarimapp.dbmanager import register_user, get_user_by_email, get_user_by_id
 from basarimapp.forms import RegisterForm, LoginForm
@@ -100,5 +100,3 @@ def logout():
     session.clear()
     flash("Logged out.")
     return redirect(url_for("index"))
-
-

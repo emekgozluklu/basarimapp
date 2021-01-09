@@ -1,5 +1,5 @@
 from decouple import config
-from flask import Flask, g
+from flask import Flask
 from basarimapp import views, auth, admin, publisher, student
 from basarimapp.dbmanager import init_db, create_super_user
 
