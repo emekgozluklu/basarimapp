@@ -38,6 +38,7 @@ SET is_active = false
 WHERE id = %s ;
 """
 
+
 def del_db(app):
     with app.app_context():
         url = current_app.config['DATABASE']
@@ -175,6 +176,23 @@ def deactivate_exam(exam_id):
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
             cur.execute(DEACTIVATE_EXAM_STATEMENT, (exam_id,))
+
+
+def get_publisher_of_exam(exam_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT (publisher_id, is_active) FROM exam WHERE id = %s;", (exam_id,))
+            res = cur.fetchone()
+
+    if res is not None:
+        res = res[0].strip("()").split(",")
+        pub_id = int(res[0])
+        is_active = res[1] == "t"
+    else:
+        pub_id = None
+        is_active = None
+    return pub_id, is_active
 
 
 if __name__ == "__main__":
