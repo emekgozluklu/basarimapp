@@ -23,6 +23,7 @@ def admin_login_required(view):
     return wrapped_view
 
 
+@bp.route('/')
 @bp.route('/dashboard')
 @admin_login_required
 def dashboard():

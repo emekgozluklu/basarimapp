@@ -25,6 +25,7 @@ def publisher_login_required(view):
     return wrapped_view
 
 
+@bp.route('/')
 @bp.route('/dashboard')
 @publisher_login_required
 def dashboard():
