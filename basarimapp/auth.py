@@ -54,8 +54,9 @@ def register():
         elif u is not None:
             error = "Account with given email already exists."
         if error is None:
-            register_user(first_name, last_name, email, password_hash)
+            register_user(first_name, last_name, email, password)
             session.clear()
+            u = get_user_by_email(email)
             session["user_id"] = u[0]
             session["user_is_admin"] = False
             session["user_is_publisher"] = False
