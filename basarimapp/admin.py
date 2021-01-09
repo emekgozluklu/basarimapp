@@ -1,5 +1,5 @@
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
-from basarimapp.dbmanager import register_publisher, get_publishers, get_user_by_email
+from basarimapp.dbmanager import register_publisher, get_publishers, get_user_by_email, get_exams
 from basarimapp.auth import load_logged_in_user
 from basarimapp.forms import AddPublisherForm
 import functools
@@ -25,8 +25,11 @@ def admin_login_required(view):
 @admin_login_required
 def dashboard():
     publishers = get_publishers()
+    exam_count = dict()
+    for pub in publishers:
+        exam_count[pub[0]] = len(get_exams(pub[0]))  # get number of exams of the pub with id pub[0]
     load_logged_in_user()
-    return render_template('admin/dashboard.html', publishers=publishers)
+    return render_template('admin/dashboard.html', publishers=publishers, exam_count=exam_count)
 
 
 @bp.route('/add_publisher', methods=('GET', 'POST'))
