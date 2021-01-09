@@ -83,7 +83,13 @@ def login():
             session["user_id"] = user[0]
             session["user_is_admin"] = user[5]
             session["user_is_publisher"] = user[7]
-            return redirect(url_for("index"))
+
+            if session["user_is_admin"]:
+                return redirect(url_for("admin.dashboard"))
+            elif session["user_is_publisher"]:
+                return redirect(url_for("publisher.dashboard"))
+            else:
+                return redirect(url_for("index"))
     return render_template("auth/login.html", form=form, error=error)
 
 
