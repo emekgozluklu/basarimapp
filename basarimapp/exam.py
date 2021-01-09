@@ -32,17 +32,13 @@ EXAM_TYPE_FIELDS = [
 
 
 def validate_exam_field_form(form_data, num_of_questions):
-    print(form_data)
     if len(form_data) != num_of_questions + 1:  # +1 for submit
         return False
-    print("FIRST CHECK")
     q = 1
     for key in form_data.keys():
         if str(q) in key or key == "submit":
-            print(key, q)
             q += 1
             continue
         else:
             return False
-    print("TRUE")
     return True
