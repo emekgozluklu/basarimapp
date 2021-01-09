@@ -1,0 +1,78 @@
+ {% extends 'layout.html' %}
+{% set active_page = "dashboard" %}
+
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block header %}
+<div class="container" style="margin-top: 10px;">
+  <div class="row">
+    <div class="col-md">
+        <h3>{{ g.user[1] + " " + g.user[2] }}' Exam History</h3>
+    </div>
+    <div class="col-sm">
+        <h1><a href="{# {{ url_for("admin.add_publisher") }} #}" class="btn btn-danger align-bottom" role="button">Load New Exam</a></h1>
+    </div>
+  </div>
+</div>{% endblock %}
+
+{% block content %}
+{% if error %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Whoops!</strong> {{ error }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+{% endif %}
+
+<table class="table" id="publishers" width="100%">
+
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Publisher</th>
+            <th>Exam Type</th>
+            <th>Correct Answers</th>
+            <th>Wrong Answers</th>
+            <th>Net Score</th>
+            <th>Percentage</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+
+            <td>Placeholder Exam</td>
+            <td>Bir Şey Yayınları</td>
+            <td>YGS</td>
+            <td>141</td>
+            <td>15</td>
+            <td>137.25</td>
+            <td>%0.02</td>
+        </tr>
+
+{#    {% for pub in publishers %}
+        <tr>
+            {% set pub_id = pub[0] %}
+            <td>{{ pub_id }}</td>
+            <td>{{ pub[1] + " " + pub[2] }}</td>
+            <td>{{ pub[3] }}</td>
+            <td>{{ exam_count[pub_id] }}</td>
+            <td>{{ pub[8].strftime("%d-%m-%Y %H:%M") }}</td>
+            <td>
+                <a href="{{ '/admin/delete_publisher/%d' %pub[0] }}" class="btn btn-dark btn-sm confirm-it" role="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                  <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                </svg>
+                </a>
+            </td>
+        </tr>
+    {%endfor%}#}
+
+    </tbody>
+</table>
+
+{% endblock %}
