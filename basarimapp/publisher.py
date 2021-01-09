@@ -1,5 +1,8 @@
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
-from basarimapp.dbmanager import get_user_by_email, get_exams, create_exam_template, create_examfield, activate_exam
+from basarimapp.dbmanager import (
+    get_user_by_email, get_exams, create_exam_template, create_examfield, activate_exam, get_publisher_of_exam,
+    deactivate_exam
+)
 from basarimapp.auth import load_logged_in_user
 from basarimapp.forms import AddExamForm, AddExamFieldForm
 from basarimapp.exam import EXAM_TYPE_FIELDS, validate_exam_field_form
@@ -94,3 +97,35 @@ def add_examfield():
         else:
             flash("Please fill all fields.")
             return render_template('exam/answersheet.html', data=data)
+
+
+@bp.route('/deactivate/<exam_id>')
+@publisher_login_required
+def deactivate(exam_id):
+    pub_id, is_active = get_publisher_of_exam(exam_id)
+    if pub_id is None:
+        flash("Not permitted!")
+        return redirect(url_for("publisher.dashboard"))
+    elif pub_id != session["user_id"]:
+        return render_template('publisher/dashboard.html', error="Not permitted.")
+    elif not is_active:
+        return render_template('publisher/dashboard.html', error="Already inactive.")
+    else:
+        deactivate_exam(exam_id)
+        return redirect(url_for("publisher.dashboard"))
+
+
+@bp.route('/activate/<exam_id>')
+@publisher_login_required
+def activate(exam_id):
+    pub_id, is_active = get_publisher_of_exam(exam_id)
+    if pub_id is None:
+        flash("Not permitted!")
+        return redirect(url_for("publisher.dashboard"))
+    elif pub_id != session["user_id"]:
+        return render_template('publisher/dashboard.html', error="Not permitted.")
+    elif is_active:
+        return render_template('publisher/dashboard.html', error="Already active.")
+    else:
+        activate_exam(exam_id)
+        return redirect(url_for("publisher.dashboard"))
