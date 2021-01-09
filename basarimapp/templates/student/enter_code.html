@@ -1,0 +1,42 @@
+ {% extends 'layout.html' %}
+
+{% from "macro.html" import render_field %}
+
+{% block title %}
+    Enter Code
+{% endblock %}
+
+{% block header %}
+    <h3 class="text-center">Enter Exam Code</h3>
+{% endblock %}
+
+{% block content %}
+
+    {# Print Error Messages #}
+    {% if error %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Whoops!</strong> {{ error }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    {% endif %}
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+        </div>
+        <div class="col-md">
+            <form id="EnterExamCodeForm" class="form" method="POST" action="{{ url_for("student.enter_code") }}" role="form">
+                {{ form.hidden_tag() }}
+                {{ render_field(form.code, placeholder="Exam Code:") }}
+                <p><input class="btn btn-default btn-submit" type="submit" value="Start to fill answers..."></p>
+            </form>
+        </div>
+
+        <div class="col-sm">
+        </div>
+
+      </div>
+    </div>
+{% endblock %}
