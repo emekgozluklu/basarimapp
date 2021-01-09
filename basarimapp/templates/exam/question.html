@@ -1,0 +1,24 @@
+
+{% macro render_question(no) %}
+    <strong>{{ no }}</strong>
+    <input type="radio" name="_{{ no }}a" id="_{{ no }}a"/>
+    <label class="bubble" for="_{{ no }}a">
+      <div class="bubble-inner">A</div>
+    </label>
+    <input type="radio" name="_{{ no }}b" id="_{{ no }}b"/>
+    <label class="bubble" for="_{{ no }}b">
+      <div class="bubble-inner">B</div>
+    </label>
+    <input type="radio" name="_{{ no }}" id="_{{ no }}c"/>
+    <label class="bubble" for="_{{ no }}c">
+      <div class="bubble-inner">C</div>
+    </label>
+    <input type="radio" name="_{{ no }}" id="_{{ no }}d"/>
+    <label class="bubble" for="_{{ no }}d">
+      <div class="bubble-inner">D</div>
+    </label>
+    <input type="radio" name="_{{ no }}" id="_{{ no }}e"/>
+    <label class="bubble" for="_{{ no }}e">
+      <div class="bubble-inner">E</div>
+    </label>
+{% endmacro %}

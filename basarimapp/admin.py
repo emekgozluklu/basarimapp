@@ -53,5 +53,3 @@ def add_publisher():
             return redirect(url_for("admin.dashboard"))
 
     return render_template('admin/add_publisher.html', form=form, error=error)
-
-

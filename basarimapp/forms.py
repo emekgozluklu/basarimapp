@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, InputRequired
+from basarimapp.exam import EXAM_TYPES, EXAM_TYPE_FIELDS
 
 
 class LoginForm(FlaskForm):
@@ -40,3 +41,17 @@ class AddPublisherForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(AddPublisherForm, self).__init__(*args, **kwargs)
+
+
+class AddExamForm(FlaskForm):
+    title = StringField('Exam Title', validators=[DataRequired(), Length(min=3, max=250)], render_kw={'class': 'form-control'})
+    exam_type = SelectField('Exam Type', choices=EXAM_TYPES, default=EXAM_TYPES[0], render_kw={'class': 'form-control'})
+
+    def __init__(self, *args, **kwargs):
+        super(AddExamForm, self).__init__(*args, **kwargs)
+
+
+class AddExamFieldForm(FlaskForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AddExamFieldForm, self).__init__(*args, **kwargs)

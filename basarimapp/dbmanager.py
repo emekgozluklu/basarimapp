@@ -3,6 +3,8 @@ from werkzeug.security import generate_password_hash
 from decouple import config
 import psycopg2
 import os
+import string
+import random
 
 curdir = os.getcwd()
 fn = os.path.join(curdir, "db_structure.sql")
@@ -14,6 +16,27 @@ INSERT INTO userrole (first_name, last_name, email, password_hash, is_admin, is_
 VALUES (%s, %s, %s, %s, %s, %s);
 """
 
+CREATE_EXAM_TEMPLATE_STATEMENT = """
+INSERT INTO exam (publisher_id, title, code, type, is_active)
+VALUES (%s, %s, %s, %s, %s);
+"""
+
+CREATE_EXAMFIELD_TEMPLATE_STATEMENT = """
+INSERT INTO examfield (exam_id, field_name, num_of_question, answer_list)
+VALUES (%s, %s, %s, %s);
+"""
+
+ACTIVATE_EXAM_STATEMENT = """
+UPDATE exam
+SET is_active = true
+WHERE id = %s ;
+"""
+
+DEACTIVATE_EXAM_STATEMENT = """
+UPDATE exam
+SET is_active = false
+WHERE id = %s ;
+"""
 
 def del_db(app):
     with app.app_context():
@@ -107,9 +130,51 @@ def get_exams(pub_id):
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM exam WHERE publisher_id = %s", (pub_id,))
+            cur.execute("SELECT * FROM exam WHERE publisher_id = %s;", (pub_id,))
             res = cur.fetchall()
     return res
+
+
+def create_exam_template(pub_id, title, exam_type):
+    url = current_app.config['DATABASE']
+    code = ''.join(random.choices(string.ascii_uppercase, k=10))  # 10 chars random key
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            try:
+                cur.execute(CREATE_EXAM_TEMPLATE_STATEMENT, (
+                    pub_id, title, code, exam_type, False
+                ))
+            except psycopg2.errors.UniqueViolation:
+                code = ''.join(random.choices(string.ascii_uppercase, k=10))  # 10 chars random key
+                cur.execute(CREATE_EXAM_TEMPLATE_STATEMENT, (
+                    pub_id, title, code, exam_type, False
+                ))
+            cur.execute("SELECT * FROM exam WHERE code = %s;", (code,))  # select created exam
+            res = cur.fetchone()  # fetch it
+    return res[0]  # return exam id
+
+
+def create_examfield(exam_id, field_name, num_of_q, answer_list):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute(CREATE_EXAMFIELD_TEMPLATE_STATEMENT, (
+                exam_id, field_name, num_of_q, answer_list
+            ))
+
+
+def activate_exam(exam_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute(ACTIVATE_EXAM_STATEMENT, (exam_id,))
+
+
+def deactivate_exam(exam_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute(DEACTIVATE_EXAM_STATEMENT, (exam_id,))
 
 
 if __name__ == "__main__":

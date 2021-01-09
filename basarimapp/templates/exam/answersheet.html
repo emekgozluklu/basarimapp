@@ -1,0 +1,38 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Adding Exam - {{ data.current_field_name }}</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/answersheet.css') }}">
+
+</head>
+<body>
+
+
+{% from "exam/question.html" import render_question %}
+
+<form method="POST" action="{{ url_for('publisher.add_examfield') }}">
+
+        <img src="{{ url_for('static', filename='images/header.png') }}" style="width: 100%;">
+  <main>
+
+		<div class="col" style="display: none;"></div>
+		<div class="col" style="display: none;"></div>
+		<div class="col" ></div>
+		<div class="col"></div>
+        <div class="col">
+			<div class="col" style="margin-top:20px;"><strong>{{ data.current_field_name }}</strong></div>
+        <div class="bubble-group">
+            {% for q_no in range(1, data.current_field_question_number+1) %}
+                {{ render_question(q_no) }}
+            {% endfor %}
+        </div>
+        <input type="submit" name="submit" value="Submit" id="submit-examfield-answers"/>
+    </div>
+  </main>
+</form>
+</body>
+</html>

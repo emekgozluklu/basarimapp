@@ -13,7 +13,7 @@ Publisher Dashboard
         <h2>{{ g.user[1] }}'s Dashboard</h2>
     </div>
     <div class="col-sm">
-        <h2><a href="{# {{ url_for("publisher.add_exam") }} #}#" class="btn btn-danger align-bottom" role="button">Add New Exam</a></h2>
+        <h2><a href="{{ url_for("publisher.add_exam") }}" class="btn btn-danger align-bottom" role="button">Add New Exam</a></h2>
     </div>
   </div>
 </div>{% endblock %}

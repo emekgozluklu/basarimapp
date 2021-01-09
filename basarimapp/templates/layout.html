@@ -36,7 +36,7 @@
                             <a class="nav-link" href="{{ url_for("publisher.dashboard") }}">Dashboard <span class="sr-only"></span></a>
                         </li>
                         <li class="nav-item {{ 'active' if active_page == 'new_exam' else '' }}">
-                            <a class="nav-link" href="#">Add New Exam <span class="sr-only"></span></a>
+                            <a class="nav-link" href="{{ url_for("publisher.add_exam") }}">Add New Exam <span class="sr-only"></span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a>
