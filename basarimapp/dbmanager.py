@@ -38,6 +38,11 @@ SET is_active = false
 WHERE id = %s ;
 """
 
+DELETE_USER_BY_ID_STATEMENT = """
+DELETE FROM userrole
+WHERE id = %s ;
+"""
+
 
 def del_db(app):
     with app.app_context():
@@ -193,6 +198,13 @@ def get_publisher_of_exam(exam_id):
         pub_id = None
         is_active = None
     return pub_id, is_active
+
+
+def delete_publisher(pub_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute(DELETE_USER_BY_ID_STATEMENT, (pub_id, ))
 
 
 if __name__ == "__main__":

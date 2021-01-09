@@ -1,5 +1,7 @@
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
-from basarimapp.dbmanager import register_publisher, get_publishers, get_user_by_email, get_exams
+from basarimapp.dbmanager import (
+    register_publisher, get_publishers, get_user_by_email, get_exams, delete_publisher, get_user_by_id
+)
 from basarimapp.auth import load_logged_in_user
 from basarimapp.forms import AddPublisherForm
 import functools
@@ -56,3 +58,16 @@ def add_publisher():
             return redirect(url_for("admin.dashboard"))
 
     return render_template('admin/add_publisher.html', form=form, error=error)
+
+
+@bp.route('/delete_publisher/<publisher_id>')
+@admin_login_required
+def delete_publisher_view(publisher_id):
+    pub = get_user_by_id(publisher_id)
+    if pub is None:
+        flash("Publisher not exists.!")
+        return redirect(url_for("admin.dashboard"))
+    else:
+        delete_publisher(publisher_id)
+        flash(f"Publisher with ID {publisher_id} is deleted!")
+        return redirect(url_for("admin.dashboard"))
