@@ -2,6 +2,7 @@ from flask import Blueprint, flash, g, redirect, render_template, request, sessi
 from basarimapp.auth import load_logged_in_user, login_required
 from basarimapp.forms import EnterExamCodeForm
 from basarimapp.exam import EXAM_TYPE_FIELDS, EXAM_TYPES
+from basarimapp.dbmanager import get_exam_by_code
 import functools
 
 
@@ -22,11 +23,8 @@ def dashboard():
 def enter_code():
     form = EnterExamCodeForm()
     if form.validate_on_submit():
-
         code = form.code.data
-
-        exam = None
-        # exam = get_exam_by_code(code)
+        exam = get_exam_by_code(code)  # fetch the exam or None if code is invalid
         if code is None:
             error = "Something is wrong. Log in again or contact us."
             flash(error)
@@ -35,7 +33,7 @@ def enter_code():
         elif exam is None:
             error = "Looks like this code is wrong. Please check it and enter again."
             return render_template("student/enter_code.html", form=form, error=error)
-        elif not exam[5]:
+        elif not exam[5]:  # check whether exam is active or not
             error = "Looks like this exam is inactive. Please check it and enter again."
             return render_template("student/enter_code.html", form=form, error=error)
         else:

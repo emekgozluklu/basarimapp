@@ -207,6 +207,24 @@ def delete_publisher(pub_id):
             cur.execute(DELETE_USER_BY_ID_STATEMENT, (pub_id, ))
 
 
+def get_results_of_student(student_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM result WHERE userrole_id = %s;", (student_id, ))
+            res = cur.fetchall()
+    return res
+
+
+def get_exam_by_code(exam_code):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM exam WHERE code = %s;", (exam_code,))
+            res = cur.fetchone()
+    return res
+
+
 if __name__ == "__main__":
     print("Reinitializing database.")
     from basarimapp import create_app
