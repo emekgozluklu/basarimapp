@@ -8,13 +8,9 @@ __pycache__/*
 
 .idea/*
 
-basarimapp/database.ini
-
 .pytest_cache/
 .coverage
 htmlcov/
 
 *.egg-info/
 /basarimapp/database_handler.py
-
-/basarimapp/static/images/
