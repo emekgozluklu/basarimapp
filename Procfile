@@ -1,1 +1,1 @@
-web: gunicorn basarimapp:app
+web: flask run
