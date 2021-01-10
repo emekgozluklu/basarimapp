@@ -1,4 +1,4 @@
-# Başarım Succes Tracker Application
+# Başarım Success Tracker Application
 
 Public web application of Başarım Success Tracker. It helps student to achieve their goals.
 
