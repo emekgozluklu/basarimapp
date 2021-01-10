@@ -7,8 +7,7 @@ import string
 import random
 from basarimapp.exam import check_answers
 
-curdir = os.getcwd()
-fn = os.path.join(curdir, "db_structure.sql")
+fn = os.path.join(".", "db_structure.sql")
 DB_INITIAL_QUERY = open(fn, "r").read()
 TABLE_NAMES = ["USERROLE", "EXAM", "EXAMFIELD", "RESULT", "FIELDRESULT", "ANSWERSHEET"]
 
@@ -36,7 +35,7 @@ UPDATE_RESULT_STATEMENT = """
 UPDATE result
 SET corrects = %s,
 wrongs = %s,
-unaswereds = %s,
+unanswereds = %s,
 net = %s
 WHERE sheet_id = %s;
 """
@@ -332,11 +331,3 @@ def calculate_result(user_id, sheet_id, exam_id):
 
             net = total_corrects - 0.25*total_wrongs
             cur.execute(UPDATE_RESULT_STATEMENT, (total_corrects, total_wrongs, total_unanswereds, net, sheet_id))
-
-
-if __name__ == "__main__":
-    print("Reinitializing database.")
-    from basarimapp import create_app
-    a = create_app()
-    init_db(a, override=True)
-    print("Done!")
