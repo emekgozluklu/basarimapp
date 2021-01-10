@@ -42,3 +42,25 @@ def validate_exam_field_form(form_data, num_of_questions):
         else:
             return False
     return True
+
+
+def validate_answersheet_form(form_data, num_of_questions):
+    if len(form_data) > num_of_questions + 1:  # +1 for submit
+        return False
+    return True
+
+
+def check_answers(correct_answers, choices):
+    corrects = wrongs = empties = 0
+
+    for key in correct_answers.keys():
+        if key == "submit":
+            continue
+        if key in choices:
+            if correct_answers[key] == choices[key]:
+                corrects += 1
+            else:
+                wrongs += 1
+        else:
+            empties += 1
+    return corrects, wrongs, empties

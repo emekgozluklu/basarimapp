@@ -1,23 +1,24 @@
 
-{% macro render_question(no) %}
+{% macro render_question(no, req=False) %}
     <strong>{{ no }}</strong>
-    <input type="radio" name="_{{ no }}" id="_{{ no }}a" required>
+
+    <input type="radio" name="_{{ no }}" id="_{{ no }}a" value="_{{ no }}a" {{ 'required' if req else '' }}>
     <label class="bubble" for="_{{ no }}a">
       <div class="bubble-inner">A</div>
     </label>
-    <input type="radio" name="_{{ no }}" id="_{{ no }}b" required>
+    <input type="radio" name="_{{ no }}" id="_{{ no }}b" value="_{{ no }}b" {{ 'required' if req else '' }}>
     <label class="bubble" for="_{{ no }}b">
       <div class="bubble-inner">B</div>
     </label>
-    <input type="radio" name="_{{ no }}" id="_{{ no }}c" required>
+    <input type="radio" name="_{{ no }}" id="_{{ no }}c" value="_{{ no }}c" {{ 'required' if req else '' }}>
     <label class="bubble" for="_{{ no }}c">
       <div class="bubble-inner">C</div>
     </label>
-    <input type="radio" name="_{{ no }}" id="_{{ no }}d" required>
+    <input type="radio" name="_{{ no }}" id="_{{ no }}d" value="_{{ no }}d" {{ 'required' if req else '' }}>
     <label class="bubble" for="_{{ no }}d">
       <div class="bubble-inner">D</div>
     </label>
-    <input type="radio" name="_{{ no }}" id="_{{ no }}e" required>
+    <input type="radio" name="_{{ no }}" id="_{{ no }}e" value="_{{ no }}e" {{ 'required' if req else '' }}>
     <label class="bubble" for="_{{ no }}e">
       <div class="bubble-inner">E</div>
     </label>

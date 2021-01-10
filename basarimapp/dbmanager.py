@@ -5,6 +5,7 @@ import psycopg2
 import os
 import string
 import random
+from basarimapp.exam import check_answers
 
 curdir = os.getcwd()
 fn = os.path.join(curdir, "db_structure.sql")
@@ -26,6 +27,20 @@ INSERT INTO examfield (exam_id, field_name, num_of_question, answer_list)
 VALUES (%s, %s, %s, %s);
 """
 
+CREATE_RESULT_STATEMENT = """
+INSERT INTO result (userrole_id, exam_id, sheet_id)
+VALUES (%s, %s, %s);
+"""
+
+UPDATE_RESULT_STATEMENT = """
+UPDATE result
+SET corrects = %s,
+wrongs = %s,
+unaswereds = %s,
+net = %s
+WHERE sheet_id = %s;
+"""
+
 ACTIVATE_EXAM_STATEMENT = """
 UPDATE exam
 SET is_active = true
@@ -41,6 +56,11 @@ WHERE id = %s ;
 DELETE_USER_BY_ID_STATEMENT = """
 DELETE FROM userrole
 WHERE id = %s ;
+"""
+
+CREATE_SHEET_TEMPLATE_STATEMENT = """
+INSERT INTO answersheet (userrole_id, exam_id, answers)
+VALUES (%s, %s, %s);
 """
 
 
@@ -216,6 +236,19 @@ def get_results_of_student(student_id):
     return res
 
 
+def create_answersheet_template(user_id, exam_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute(CREATE_SHEET_TEMPLATE_STATEMENT, (
+                user_id, exam_id, ""
+            ))
+
+            cur.execute("SELECT * FROM answersheet WHERE (userrole_id = %s AND exam_id = %s);", (user_id, exam_id))
+            res = cur.fetchone()  # fetch it
+    return res[0]
+
+
 def get_exam_by_code(exam_code):
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
@@ -223,6 +256,82 @@ def get_exam_by_code(exam_code):
             cur.execute("SELECT * FROM exam WHERE code = %s;", (exam_code,))
             res = cur.fetchone()
     return res
+
+
+def add_choices_to_answersheet(sheet_id, form_data, field_name):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            # get the sheet from db first
+            cur.execute("SELECT * FROM answersheet WHERE id = %s;", (sheet_id,))
+            res = cur.fetchone()
+
+            # this should not occur.
+            if res is None:
+                raise Exception("Add choices crashed hard.")
+
+            # read already submitted answers and add new form data to them
+            previous_answers = res[3]  # already submitted answers
+            if previous_answers:
+                answers_dict = eval(previous_answers)  # convert to dictionary
+                answers_dict[field_name] = form_data  # add new form with field name
+            else:
+                answers_dict = dict()  # create dict
+                answers_dict[field_name] = form_data  # insert the form data
+
+            # write changes to database, update with new answers
+            cur.execute("UPDATE answersheet SET answers = %s WHERE id = %s;", (str(answers_dict), sheet_id))
+
+
+def calculate_result(user_id, sheet_id, exam_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            # create result in database
+            cur.execute(CREATE_RESULT_STATEMENT, (user_id, exam_id, sheet_id))
+
+            cur.execute("SELECT * FROM result WHERE sheet_id = %s;", (sheet_id,))
+            result = cur.fetchone()
+
+            # this should not occur.
+            if result is None:
+                raise Exception("Calculate result crashed hard.")
+
+            total_corrects = 0
+            total_wrongs = 0
+            total_unanswereds = 0
+
+            # get the sheet from db
+            cur.execute("SELECT * FROM answersheet WHERE id = %s;", (sheet_id,))
+            sheet = cur.fetchone()
+
+            # this should not occur.
+            if sheet is None:
+                raise Exception("Calculate result crashed hard.")
+
+            # read already submitted answers and add new form data to them
+            answers = sheet[3]  # already submitted answers
+            if not answers:
+                raise Exception("Error while calculating result. No answer.")
+            answers = eval(answers)
+            fields = answers.keys()
+
+            for field in fields:
+                cur.execute("SELECT * FROM examfield WHERE exam_id = %s AND field_name = %s;", (exam_id, field))
+                exam_field = cur.fetchone()
+
+                if exam_field is None:
+                    raise Exception("examfield can not be found in the database.")
+
+                correct_answers = eval(exam_field[4])
+                field_corrects, field_wrongs, field_unanswereds = check_answers(correct_answers, answers[field])
+
+                total_corrects += field_corrects
+                total_wrongs += field_wrongs
+                total_unanswereds += field_unanswereds
+
+            net = total_corrects - 0.25*total_wrongs
+            cur.execute(UPDATE_RESULT_STATEMENT, (total_corrects, total_wrongs, total_unanswereds, net, sheet_id))
 
 
 if __name__ == "__main__":
