@@ -62,6 +62,29 @@ INSERT INTO answersheet (userrole_id, exam_id, answers)
 VALUES (%s, %s, %s);
 """
 
+JOIN_USER_RESULT_EXAM = """
+SELECT
+    exam.title,
+    exam.type,
+    pub.first_name,
+    result.corrects,
+    result.wrongs,
+    result.unanswereds,
+    result.net,
+    result.score,
+    result.upload_time
+FROM
+     userrole AS stu
+INNER JOIN result
+    ON stu.id = result.userrole_id
+INNER JOIN exam
+    ON result.exam_id = exam.id
+INNER JOIN userrole AS pub
+    ON exam.publisher_id = pub.id
+WHERE
+      stu.id = %s;
+"""
+
 
 def del_db(app):
     with app.app_context():
@@ -331,3 +354,12 @@ def calculate_result(user_id, sheet_id, exam_id):
 
             net = total_corrects - 0.25*total_wrongs
             cur.execute(UPDATE_RESULT_STATEMENT, (total_corrects, total_wrongs, total_unanswereds, net, sheet_id))
+
+
+def get_joined_result_data(student_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute(JOIN_USER_RESULT_EXAM, (student_id, ))
+            res = cur.fetchall()
+    return res
