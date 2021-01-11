@@ -1,6 +1,8 @@
 {% extends 'layout.html' %}
 {% set active_page = "lectures" %}
 
+{% from "student/render_nav_item.html" import render_nav_item %}
+
 
 {% block title %}
 Lectures Report
@@ -26,179 +28,22 @@ Lectures Report
             <div class="card" style="padding: 5%;">
                 <nav>
                   <div class="nav nav-tabs" id="nav-tab" role="tablist" >
-                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Lecture 1</a>
-                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Lecture 2</a>
-                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Lecture 3</a>
+                      {% for i in range(data.num_of_lectures) %}
+                          {% set lecture_name = data.last_week[i][0].replace(" ", "-") %}
+                          <a class="nav-item nav-link {{ 'active' if i == 0 else "" }}" id="nav-{{ lecture_name }}-tab" data-toggle="tab" href="#nav-{{ lecture_name }}" role="tab" aria-controls="nav-{{ lecture_name }}" aria-selected={{ "true" if i == 0 else "false" }}>{{ data.last_week[i][0] }}</a>
+                      {% endfor %}
                   </div>
                 </nav>
+            </div>
 
                 <div class="tab-content" id="nav-tabContent" style="margin: 2%;">
-
-                    <h4 class="h4">This Week</h4>
-                    <div class="row">
-                        <div class="col-sm-6 col-12">
-                            <div class="card">
-                              <div class="card-content">
-                                <div class="card-body">
-                                  <div class="media d-flex">
-                                    <div class="align-self-center">
-                                      <i class="icon-check success font-large-2 float-left"></i>
-                                    </div>
-                                    <div class="media-body text-right">
-                                      <h3>87.1 %</h3>
-                                      <span>Correct Answers Ratio</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-12">
-                            <div class="card">
-                              <div class="card-content">
-                                <div class="card-body">
-                                  <div class="media d-flex">
-                                    <div class="align-self-center">
-                                      <i class="icon-close danger font-large-2 float-left"></i>
-                                    </div>
-                                    <div class="media-body text-right">
-                                      <h3>6.7%</h3>
-                                      <span>Wrong Answers Ratio</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                    {% for i in range(data.num_of_lectures) %}
+                        {% set lecture_name = data.last_week[i][0].replace(" ", "-") %}
+                          <div class="tab-pane fade {{ "show active" if i == 0 else ""}}" id="nav-{{ lecture_name }}" role="tabpanel" aria-labelledby="nav-{{ lecture_name }}-tab">
+                              {{ render_nav_item(data.last_week[i], data.last_month[i]) }}
                           </div>
-                        <div class="col-sm-6 col-12">
-                            <div class="card">
-                              <div class="card-content">
-                                <div class="card-body">
-                                  <div class="media d-flex">
-                                    <div class="align-self-center">
-                                      <i class="icon-pencil info font-large-2 float-left"></i>
-                                    </div>
-                                    <div class="media-body text-right">
-                                      <h3>120</h3>
-                                      <span>Solved Questions</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        <div class="col-sm-6 col-12">
-                        <div class="card">
-                          <div class="card-content">
-                            <div class="card-body">
-                              <div class="media d-flex">
-                                <div class="align-self-center">
-                                  <i class="icon-graph warning font-large-2 float-left"></i>
-                                </div>
-                                <div class="media-body text-right">
-                                  <h3>4</h3>
-                                  <span>Mock Exams</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <hr/>
-
-                    <h4 class="h4">This Month</h4>
-                    <div class="row">
-                        <div class=" col-sm-6 col-12">
-                            <div class="card">
-                              <div class="card-content">
-                                <div class="card-body">
-                                  <div class="media d-flex">
-                                    <div class="align-self-center">
-                                      <i class="icon-check success font-large-2 float-left"></i>
-                                    </div>
-                                    <div class="media-body text-right">
-                                      <h3>87.1 %</h3>
-                                      <span>Correct Answers Ratio</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                        <div class=" col-sm-6 col-12">
-                            <div class="card">
-                              <div class="card-content">
-                                <div class="card-body">
-                                  <div class="media d-flex">
-                                    <div class="align-self-center">
-                                      <i class="icon-close danger font-large-2 float-left"></i>
-                                    </div>
-                                    <div class="media-body text-right">
-                                      <h3>6.7%</h3>
-                                      <span>Wrong Answers Ratio</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        <div class=" col-sm-6 col-12">
-                            <div class="card">
-                              <div class="card-content">
-                                <div class="card-body">
-                                  <div class="media d-flex">
-                                    <div class="align-self-center">
-                                      <i class="icon-pencil info font-large-2 float-left"></i>
-                                    </div>
-                                    <div class="media-body text-right">
-                                      <h3>120</h3>
-                                      <span>Solved Questions</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        <div class=" col-sm-6 col-12">
-                        <div class="card">
-                          <div class="card-content">
-                            <div class="card-body">
-                              <div class="media d-flex">
-                                <div class="align-self-center">
-                                  <i class="icon-graph warning font-large-2 float-left"></i>
-                                </div>
-                                <div class="media-body text-right">
-                                  <h3>4</h3>
-                                  <span>Mock Exams</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-
-                  </div>
-
-                  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-
-
-                    {#SECOND LECTURE DATA#}
-
-
-                  </div>
-                  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-
-
-                    {#THIRD LECTURE DATA#}
-
-
-                  </div>
+                    {% endfor %}
                 </div>
-
 
             <h1 class="h2">General</h1><hr/>
 
@@ -217,7 +62,7 @@ Lectures Report
                                 <span> Not gonna lie, it is impressing. </span>
                               </div>
                               <div class="align-self-center">
-                                <h1>1731</h1>
+                                <h1>{{ data.general[1] }}</h1>
                               </div>
                             </div>
                           </div>
@@ -237,7 +82,7 @@ Lectures Report
                                     <span>Wow! You are just P E R F E C T !</span>
                                   </div>
                                   <div class="align-self-center">
-                                    <h1>26</h1>
+                                    <h1>{{ data.general[0] }}</h1>
                                   </div>
                                 </div>
                               </div>
@@ -264,9 +109,8 @@ Lectures Report
                     </div>
                 </div>
             </div>
-
-        </main>
-      </div>
-    </div>
+    </main>
+  </div>
+</div>
 
 {% endblock %}

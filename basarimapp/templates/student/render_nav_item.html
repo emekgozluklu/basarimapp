@@ -1,0 +1,147 @@
+{% macro render_nav_item(weekly_lecture_data, monthly_lecture_data) %}
+                    <h4 class="h4">This Week</h4>
+                    <div class="row">
+                        <div class="col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-check success font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>{{ "%0.2f"| format(100 * weekly_lecture_data[2] / weekly_lecture_data[5]) }} %</h3>
+                                      <span>Correct Answers Ratio</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-close danger font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>{{ "%0.2f"| format(100 * weekly_lecture_data[3] / weekly_lecture_data[5]) }} %</h3>
+                                      <span>Wrong Answers Ratio</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <div class="col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-pencil info font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>{{ weekly_lecture_data[5] }}</h3>
+                                      <span>Solved Questions</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <div class="col-sm-6 col-12">
+                        <div class="card">
+                          <div class="card-content">
+                            <div class="card-body">
+                              <div class="media d-flex">
+                                <div class="align-self-center">
+                                  <i class="icon-graph warning font-large-2 float-left"></i>
+                                </div>
+                                <div class="media-body text-right">
+                                  <h3>{{ weekly_lecture_data[1] }}</h3>
+                                  <span>Mock Exams</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr/>
+
+                    <h4 class="h4">This Month</h4>
+                    <div class="row">
+                        <div class=" col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-check success font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>{{ "%0.2f"| format(100 * monthly_lecture_data[2] / monthly_lecture_data[5]) }} %</h3>
+                                      <span>Correct Answers Ratio</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class=" col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-close danger font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>{{ "%0.2f"| format(100 * monthly_lecture_data[3] / monthly_lecture_data[5]) }} %</h3>
+                                      <span>Wrong Answers Ratio</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <div class=" col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-pencil info font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>{{ monthly_lecture_data[5] }}</h3>
+                                      <span>Solved Questions</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <div class=" col-sm-6 col-12">
+                        <div class="card">
+                          <div class="card-content">
+                            <div class="card-body">
+                              <div class="media d-flex">
+                                <div class="align-self-center">
+                                  <i class="icon-graph warning font-large-2 float-left"></i>
+                                </div>
+                                <div class="media-body text-right">
+                                  <h3>{{ monthly_lecture_data[1] }}</h3>
+                                  <span>Mock Exams</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+{% endmacro %}
