@@ -1,0 +1,272 @@
+{% extends 'layout.html' %}
+{% set active_page = "lectures" %}
+
+
+{% block title %}
+Lectures Report
+{% endblock %}
+
+{% block more_css %}
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+      <div class="row" >
+
+        <main role="main" class="col-md ml-sm-auto col-lg" style="margin-top: 20px;">
+            <h1 class="h2">Dashboard</h1><hr/>
+
+            <div class="card" style="padding: 5%;">
+                <nav>
+                  <div class="nav nav-tabs" id="nav-tab" role="tablist" >
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Lecture 1</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Lecture 2</a>
+                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Lecture 3</a>
+                  </div>
+                </nav>
+
+                <div class="tab-content" id="nav-tabContent" style="margin: 2%;">
+
+                    <h4 class="h4">This Week</h4>
+                    <div class="row">
+                        <div class="col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-check success font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>87.1 %</h3>
+                                      <span>Correct Answers Ratio</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-close danger font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>6.7%</h3>
+                                      <span>Wrong Answers Ratio</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <div class="col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-pencil info font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>120</h3>
+                                      <span>Solved Questions</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <div class="col-sm-6 col-12">
+                        <div class="card">
+                          <div class="card-content">
+                            <div class="card-body">
+                              <div class="media d-flex">
+                                <div class="align-self-center">
+                                  <i class="icon-graph warning font-large-2 float-left"></i>
+                                </div>
+                                <div class="media-body text-right">
+                                  <h3>4</h3>
+                                  <span>Mock Exams</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr/>
+
+                    <h4 class="h4">This Month</h4>
+                    <div class="row">
+                        <div class=" col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-check success font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>87.1 %</h3>
+                                      <span>Correct Answers Ratio</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class=" col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-close danger font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>6.7%</h3>
+                                      <span>Wrong Answers Ratio</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <div class=" col-sm-6 col-12">
+                            <div class="card">
+                              <div class="card-content">
+                                <div class="card-body">
+                                  <div class="media d-flex">
+                                    <div class="align-self-center">
+                                      <i class="icon-pencil info font-large-2 float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                      <h3>120</h3>
+                                      <span>Solved Questions</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <div class=" col-sm-6 col-12">
+                        <div class="card">
+                          <div class="card-content">
+                            <div class="card-body">
+                              <div class="media d-flex">
+                                <div class="align-self-center">
+                                  <i class="icon-graph warning font-large-2 float-left"></i>
+                                </div>
+                                <div class="media-body text-right">
+                                  <h3>4</h3>
+                                  <span>Mock Exams</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+
+                    {#SECOND LECTURE DATA#}
+
+
+                  </div>
+                  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+
+                    {#THIRD LECTURE DATA#}
+
+
+                  </div>
+                </div>
+
+
+            <h1 class="h2">General</h1><hr/>
+
+            <div class="card" style="padding: 5%;">
+                 <div class="row">
+                    <div class="col-xl-6 col-md-12">
+                      <div class="card overflow-hidden">
+                        <div class="card-content">
+                          <div class="card-body cleartfix">
+                            <div class="media align-items-stretch">
+                              <div class="align-self-center">
+                                <i class="icon-note primary font-large-2 mr-2"></i>
+                              </div>
+                              <div class="media-body">
+                                <h4>Number of Questions</h4>
+                                <span> Not gonna lie, it is impressing. </span>
+                              </div>
+                              <div class="align-self-center">
+                                <h1>1731</h1>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-6 col-md-12">
+                          <div class="card">
+                            <div class="card-content">
+                              <div class="card-body cleartfix">
+                                <div class="media align-items-stretch">
+                                  <div class="align-self-center">
+                                    <i class="icon-rocket warning font-large-2 mr-2"></i>
+                                  </div>
+                                  <div class="media-body">
+                                    <h4>Total Exams</h4>
+                                    <span>Wow! You are just P E R F E C T !</span>
+                                  </div>
+                                  <div class="align-self-center">
+                                    <h1>26</h1>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body cleartfix">
+                                    <div class="media align-items-stretch text-centered">
+                                        <div class="align-self-center ">
+                                            <h1 class="mr-2">Love the thing you do. Build the future!</h1>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="icon-heart danger font-large-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+      </div>
+    </div>
+
+{% endblock %}
