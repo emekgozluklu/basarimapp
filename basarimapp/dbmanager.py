@@ -85,6 +85,24 @@ WHERE
       stu.id = %s;
 """
 
+NUM_OF_UPLOADED_EXAMS_TODAY = """
+SELECT count(*)
+FROM result
+WHERE upload_time > now() - interval '1 day' AND userrole_id = %s;
+"""
+
+NUM_OF_UPLOADED_EXAMS_THIS_WEEK = """
+SELECT count(*)
+FROM result
+WHERE upload_time > now() - interval '1 week' AND userrole_id = %s;
+"""
+
+NUM_OF_UPLOADED_EXAMS_THIS_MONTH = """
+SELECT count(*)
+FROM result
+WHERE upload_time > now() - interval '1 month' AND userrole_id = %s;
+"""
+
 
 def del_db(app):
     """ Drop all tables in database. """
