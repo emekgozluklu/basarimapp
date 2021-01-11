@@ -26,6 +26,14 @@ Lectures Report
             <h1 class="h2">Dashboard</h1><hr/>
 
             <div class="card" style="padding: 5%;">
+            {% if error %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <strong>Whoops!</strong> {{ error }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            {% endif %}
                 <nav>
                   <div class="nav nav-tabs" id="nav-tab" role="tablist" >
                       {% for i in range(data.num_of_lectures) %}
@@ -34,7 +42,7 @@ Lectures Report
                       {% endfor %}
                   </div>
                 </nav>
-            </div>
+
 
                 <div class="tab-content" id="nav-tabContent" style="margin: 2%;">
                     {% for i in range(data.num_of_lectures) %}
@@ -44,7 +52,7 @@ Lectures Report
                           </div>
                     {% endfor %}
                 </div>
-
+            </div>
             <h1 class="h2">General</h1><hr/>
 
             <div class="card" style="padding: 5%;">

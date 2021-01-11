@@ -102,6 +102,11 @@ def lectures():
 
     last_week, last_month, general = get_field_results_of_student(session["user_id"])
 
+    if general[1] is None or not last_week or not last_month:
+        error = "You do not have any exams for now. Start uploading..."
+        last_week = last_month = [("", 0, 0, 0, 0, 1)]
+        general = [0, 0]
+
     lecture_names_month = [i[0] for i in last_month]
     lecture_names_week = [i[0] for i in last_week]
 
