@@ -90,7 +90,7 @@ def login():
             elif session["user_is_publisher"]:
                 return redirect(url_for("publisher.dashboard"))
             else:
-                return redirect(url_for("index"))
+                return redirect(url_for("student.dashboard"))
     return render_template("auth/login.html", form=form, error=error)
 
 
