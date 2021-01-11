@@ -103,6 +103,54 @@ FROM result
 WHERE upload_time > now() - interval '1 month' AND userrole_id = %s;
 """
 
+GET_FIELD_RESULTS_STATEMENT = """
+SELECT
+    count(r.id),
+    sum(r.corrects)+sum(r.wrongs)+sum(r.unanswereds) AS ques
+FROM
+     result AS r
+WHERE userrole_id = %s;
+"""
+
+GET_FIELD_RESULTS_LAST_WEEK = """
+SELECT
+    e.field_name,
+    count(e.field_name),
+    sum(f.corrects::INTEGER),
+    sum(f.wrongs::INTEGER),
+    sum(f.unanswereds::INTEGER),
+    sum(e.num_of_question)
+FROM
+     examfield AS e
+INNER JOIN fieldresult AS f
+    ON e.id = f.examfield_id
+INNER JOIN result r
+    ON f.result_id = r.id
+WHERE upload_time > now() - interval '1 week' AND userrole_id = %s
+GROUP BY
+    e.field_name;
+"""
+
+
+GET_FIELD_RESULTS_LAST_MONTH = """
+SELECT
+    e.field_name,
+    count(e.field_name),
+    sum(f.corrects::INTEGER),
+    sum(f.wrongs::INTEGER),
+    sum(f.unanswereds::INTEGER),
+    sum(e.num_of_question)
+FROM
+     examfield AS e
+INNER JOIN fieldresult AS f
+    ON e.id = f.examfield_id
+INNER JOIN result r
+    ON f.result_id = r.id
+WHERE upload_time > now() - interval '1 month' AND userrole_id = %s
+GROUP BY
+    e.field_name;
+"""
+
 
 def del_db(app):
     """ Drop all tables in database. """
@@ -416,3 +464,20 @@ def get_joined_result_data(student_id):
             cur.execute(JOIN_USER_RESULT_EXAM, (student_id, ))
             res = cur.fetchall()
     return res
+
+
+def get_field_results_of_student(student_id):
+    """ get combined field result information to display on student lecture page. """
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+
+            cur.execute(GET_FIELD_RESULTS_LAST_WEEK, (student_id,))
+            last_week = cur.fetchall()
+
+            cur.execute(GET_FIELD_RESULTS_LAST_MONTH, (student_id,))
+            last_month = cur.fetchall()
+
+            cur.execute(GET_FIELD_RESULTS_STATEMENT, (student_id,))
+            general = cur.fetchone()
+    return last_week, last_month, general
