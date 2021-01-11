@@ -12,13 +12,12 @@ import functools
 bp = Blueprint('student', __name__, url_prefix='/student')
 
 
-@bp.route('/')
-@bp.route('/dashboard')
+@bp.route('/exams')
 @login_required
-def dashboard():
+def exams():
     load_logged_in_user()
     results = get_joined_result_data(session["user_id"])
-    return render_template('student/dashboard.html', results=results, exam_types=EXAM_TYPES)
+    return render_template('student/exams.html', results=results, exam_types=EXAM_TYPES)
 
 
 @bp.route("/code", methods=('GET', 'POST'))
@@ -94,9 +93,10 @@ def fill_sheet():
             return render_template("student/answersheet.html", data=template_data)
 
 
-@bp.route('/lectures')
+@bp.route('/')
+@bp.route('/dashboard')
 @login_required
-def lectures():
+def dashboard():
     error = None
     load_logged_in_user()
 
@@ -129,4 +129,4 @@ def lectures():
         "num_of_lectures": num_of_lectures,
         "general": general
     }
-    return render_template('student/lectures.html', data=data, error=error)
+    return render_template('student/dashboard.html', data=data, error=error)

@@ -1,66 +1,123 @@
- {% extends 'layout.html' %}
+{% extends 'layout.html' %}
 {% set active_page = "dashboard" %}
 
+{% from "student/render_nav_item.html" import render_nav_item %}
+
 {% block title %}
-Admin Dashboard
+Lectures Report
 {% endblock %}
 
-{% block header %}
-<div class="container" style="margin-top: 10px;">
-  <div class="row">
-    <div class="col-md">
-        <h3>{{ g.user[1] + " " + g.user[2] }}' Exam History</h3>
-    </div>
-    <div class="col-sm">
-        <h1><a href="{{ url_for("student.enter_code") }} " class="btn btn-danger align-bottom" role="button">Load New Exam</a></h1>
-    </div>
-  </div>
-</div>{% endblock %}
+{% block more_css %}
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
-{% if error %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>Whoops!</strong> {{ error }}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-{% endif %}
 
-<table class="table" id="results" width="100%">
+    <div class="container">
+      <div class="row" >
 
-    <thead>
-        <tr>
-            <th>Exam Title</th>
-            <th>Type</th>
-            <th>Publisher</th>
-            <th> &#10004; </th>
-            <th> &#10060; </th>
-            <th> &#9675; </th>
-            <th>Net</th>
-            <th>Score</th>
-            <th> <b>%</b> </th>
-            <th>Uploaded at</th>
-        </tr>
-    </thead>
-    <tbody>
+        <main role="main" class="col-md ml-sm-auto col-lg" style="margin-top: 20px;">
+            <h1 class="h2">Dashboard</h1><hr/>
 
-    {% for res in results %}
-        <tr>
-            <td> {{ res[0] }} </td>
-            <td> {{ exam_types[(res[1])][1] }} </td>
-            <td> {{ res[2] }} </td>
-            <td> {{ res[3] }} </td>
-            <td> {{ res[4] }} </td>
-            <td> {{ res[5] }} </td>
-            <td> {{ res[6] }} </td>
-            <td> {{ res[7] }} </td>
-            <td> #{#{{ percentage }}#} </td>
-            <td> {{ res[8].strftime("%d-%m-%Y %H:%M") }} </td>
-        </tr>
-    {%endfor%}
+            <div class="card" style="padding: 5%;">
+            {% if error %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <strong>Whoops!</strong> {{ error }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            {% endif %}
+                <nav>
+                  <div class="nav nav-tabs" id="nav-tab" role="tablist" >
+                      {% for i in range(data.num_of_lectures) %}
+                          {% set lecture_name = data.last_week[i][0].replace(" ", "-") %}
+                          <a class="nav-item nav-link {{ 'active' if i == 0 else "" }}" id="nav-{{ lecture_name }}-tab" data-toggle="tab" href="#nav-{{ lecture_name }}" role="tab" aria-controls="nav-{{ lecture_name }}" aria-selected={{ "true" if i == 0 else "false" }}>{{ data.last_week[i][0] }}</a>
+                      {% endfor %}
+                  </div>
+                </nav>
 
-    </tbody>
-</table>
+
+                <div class="tab-content" id="nav-tabContent" style="margin: 2%;">
+                    {% for i in range(data.num_of_lectures) %}
+                        {% set lecture_name = data.last_week[i][0].replace(" ", "-") %}
+                          <div class="tab-pane fade {{ "show active" if i == 0 else ""}}" id="nav-{{ lecture_name }}" role="tabpanel" aria-labelledby="nav-{{ lecture_name }}-tab">
+                              {{ render_nav_item(data.last_week[i], data.last_month[i]) }}
+                          </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <h1 class="h2">General</h1><hr/>
+
+            <div class="card" style="padding: 5%;">
+                 <div class="row">
+                    <div class="col-xl-6 col-md-12">
+                      <div class="card overflow-hidden">
+                        <div class="card-content">
+                          <div class="card-body cleartfix">
+                            <div class="media align-items-stretch">
+                              <div class="align-self-center">
+                                <i class="icon-note primary font-large-2 mr-2"></i>
+                              </div>
+                              <div class="media-body">
+                                <h4>Number of Questions</h4>
+                                <span> Not gonna lie, it is impressing. </span>
+                              </div>
+                              <div class="align-self-center">
+                                <h1>{{ data.general[1] }}</h1>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-6 col-md-12">
+                          <div class="card">
+                            <div class="card-content">
+                              <div class="card-body cleartfix">
+                                <div class="media align-items-stretch">
+                                  <div class="align-self-center">
+                                    <i class="icon-rocket warning font-large-2 mr-2"></i>
+                                  </div>
+                                  <div class="media-body">
+                                    <h4>Total Exams</h4>
+                                    <span>Wow! You are just P E R F E C T !</span>
+                                  </div>
+                                  <div class="align-self-center">
+                                    <h1>{{ data.general[0] }}</h1>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body cleartfix">
+                                    <div class="media align-items-stretch text-centered">
+                                        <div class="align-self-center ">
+                                            <h1 class="mr-2">Love the thing you do. Build the future!</h1>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="icon-heart danger font-large-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+  </div>
+</div>
 
 {% endblock %}

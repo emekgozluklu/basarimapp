@@ -1,0 +1,66 @@
+ {% extends 'layout.html' %}
+{% set active_page = "exams" %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block header %}
+<div class="container" style="margin-top: 10px;">
+  <div class="row">
+    <div class="col-md">
+        <h3>{{ g.user[1] + " " + g.user[2] }}' Exam History</h3>
+    </div>
+    <div class="col-sm">
+        <h1><a href="{{ url_for("student.enter_code") }} " class="btn btn-success align-bottom" role="button">Load New Exam</a></h1>
+    </div>
+  </div>
+</div>{% endblock %}
+
+{% block content %}
+{% if error %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Whoops!</strong> {{ error }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+{% endif %}
+
+<table class="table" id="results" width="100%">
+
+    <thead>
+        <tr>
+            <th>Exam Title</th>
+            <th>Type</th>
+            <th>Publisher</th>
+            <th> &#10004; </th>
+            <th> &#10060; </th>
+            <th> &#9675; </th>
+            <th>Net</th>
+            <th>Score</th>
+            <th> <b>%</b> </th>
+            <th>Uploaded at</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    {% for res in results %}
+        <tr>
+            <td> {{ res[0] }} </td>
+            <td> {{ exam_types[(res[1])][1] }} </td>
+            <td> {{ res[2] }} </td>
+            <td> {{ res[3] }} </td>
+            <td> {{ res[4] }} </td>
+            <td> {{ res[5] }} </td>
+            <td> {{ res[6] }} </td>
+            <td> {{ res[7] }} </td>
+            <td> #{#{{ percentage }}#} </td>
+            <td> {{ res[8].strftime("%d-%m-%Y %H:%M") }} </td>
+        </tr>
+    {%endfor%}
+
+    </tbody>
+</table>
+
+{% endblock %}
