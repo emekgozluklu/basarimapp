@@ -3,7 +3,7 @@ from basarimapp.auth import load_logged_in_user, login_required
 from basarimapp.forms import EnterExamCodeForm
 from basarimapp.exam import EXAM_TYPE_FIELDS, EXAM_TYPES, validate_answersheet_form
 from basarimapp.dbmanager import (
-    get_results_of_student, add_choices_to_answersheet, get_exam_by_code, create_answersheet_template, calculate_result,
+    add_choices_to_answersheet, get_exam_by_code, create_answersheet_template, calculate_result,
     get_joined_result_data
 )
 import functools

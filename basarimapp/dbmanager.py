@@ -87,6 +87,7 @@ WHERE
 
 
 def del_db(app):
+    """ Drop all tables in database. """
     with app.app_context():
         url = current_app.config['DATABASE']
         with psycopg2.connect(url) as conn:
@@ -96,6 +97,7 @@ def del_db(app):
 
 
 def init_db(app, override=False):
+    """ Initialize database using DDL statements."""
     if override:
         del_db(app)
     with app.app_context():
@@ -106,6 +108,7 @@ def init_db(app, override=False):
 
 
 def register_user(first_name, last_name, email, password, is_admin=False, is_publisher=False):
+    """ Register user with given information. """
     p_hash = generate_password_hash(password)
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
@@ -116,6 +119,7 @@ def register_user(first_name, last_name, email, password, is_admin=False, is_pub
 
 
 def get_user_by_email(email):
+    """ Get user given email address. Return None if not exists. """
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -125,6 +129,7 @@ def get_user_by_email(email):
 
 
 def get_user_by_id(uid):
+    """ Get user given user id. Return None if not exists. """
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -133,15 +138,17 @@ def get_user_by_id(uid):
     return res
 
 
-def create_super_user(app):
+def create_super_user(app, first_name="admin", last_name="", email=None, password=None):
+    """ Create superuser with credentials given as environment variables."""
     print("Creating superuser...")
-    first_name = "admin"
-    last_name = "admin"
     is_admin = True
     is_publisher = False
     with app.app_context():
-        email = config("ADMIN_EMAIL")
-        p_hash = generate_password_hash(config("ADMIN_PASSWORD"))
+        if email is None:
+            email = config("ADMIN_EMAIL")
+        if password is None:
+            password = config("ADMIN_PASSWORD")
+        p_hash = generate_password_hash(password)
         url = app.config['DATABASE']
         with psycopg2.connect(url) as conn:
             with conn.cursor() as cur:
@@ -155,6 +162,7 @@ def create_super_user(app):
 
 
 def register_publisher(pub_name, email, password, is_admin=False, is_publisher=True):
+    """ Add a publisher account to system. Requires admin privileges."""
     p_hash = generate_password_hash(password)
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
@@ -165,6 +173,7 @@ def register_publisher(pub_name, email, password, is_admin=False, is_publisher=T
 
 
 def get_publishers():
+    """ Fetch and return all registered publishers."""
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -174,7 +183,7 @@ def get_publishers():
 
 
 def get_exams(pub_id):
-    # connection sessionda tutulabilir hızlandırmak için
+    """ Fetch and return all exams created by publisher with given id."""
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -184,6 +193,7 @@ def get_exams(pub_id):
 
 
 def create_exam_template(pub_id, title, exam_type):
+    """ Create a row in exam table. Create a random code. Redirect answer fill page. """
     url = current_app.config['DATABASE']
     code = ''.join(random.choices(string.ascii_uppercase, k=10))  # 10 chars random key
     with psycopg2.connect(url) as conn:
@@ -192,7 +202,7 @@ def create_exam_template(pub_id, title, exam_type):
                 cur.execute(CREATE_EXAM_TEMPLATE_STATEMENT, (
                     pub_id, title, code, exam_type, False
                 ))
-            except psycopg2.errors.UniqueViolation:
+            except psycopg2.errors.UniqueViolation:  # if code exists
                 code = ''.join(random.choices(string.ascii_uppercase, k=10))  # 10 chars random key
                 cur.execute(CREATE_EXAM_TEMPLATE_STATEMENT, (
                     pub_id, title, code, exam_type, False
@@ -203,6 +213,7 @@ def create_exam_template(pub_id, title, exam_type):
 
 
 def create_examfield(exam_id, field_name, num_of_q, answer_list):
+    """ create exam field to fill correct answers of exam with given id """
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -212,6 +223,7 @@ def create_examfield(exam_id, field_name, num_of_q, answer_list):
 
 
 def activate_exam(exam_id):
+    """ activate exam with given exam_id """
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -219,6 +231,7 @@ def activate_exam(exam_id):
 
 
 def deactivate_exam(exam_id):
+    """ deactivate exam with given exam_id """
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -226,6 +239,7 @@ def deactivate_exam(exam_id):
 
 
 def get_publisher_of_exam(exam_id):
+    """ return the publisher information of exam with given exam_id """
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -243,6 +257,7 @@ def get_publisher_of_exam(exam_id):
 
 
 def delete_publisher(pub_id):
+    """ delete publisher account from system with all its exams and examfields. """
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -250,6 +265,7 @@ def delete_publisher(pub_id):
 
 
 def get_results_of_student(student_id):
+    """ get results of the student with given id """
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
@@ -305,12 +321,28 @@ def add_choices_to_answersheet(sheet_id, form_data, field_name):
             cur.execute("UPDATE answersheet SET answers = %s WHERE id = %s;", (str(answers_dict), sheet_id))
 
 
+def create_field_result(examfield_id, result_id, corrects, wrongs, unanswereds):
+    statement = """
+    INSERT INTO
+        fieldresult (examfield_id, result_id, corrects, wrongs, unanswereds)
+    VALUES 
+        (%s, %s, %s, %s, %s);
+    """
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute(statement, (examfield_id, result_id, corrects, wrongs, unanswereds))
+
+
 def calculate_result(user_id, sheet_id, exam_id):
+    """ calculate the correct, worng and unanswered question comparing answer sheet and exam with
+     given ids. create a database entry in result table. """
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
             # create result in database
             cur.execute(CREATE_RESULT_STATEMENT, (user_id, exam_id, sheet_id))
+            conn.commit()
 
             cur.execute("SELECT * FROM result WHERE sheet_id = %s;", (sheet_id,))
             result = cur.fetchone()
@@ -348,6 +380,8 @@ def calculate_result(user_id, sheet_id, exam_id):
                 correct_answers = eval(exam_field[4])
                 field_corrects, field_wrongs, field_unanswereds = check_answers(correct_answers, answers[field])
 
+                create_field_result(exam_field[0], result[0], field_corrects, field_wrongs, field_unanswereds)
+
                 total_corrects += field_corrects
                 total_wrongs += field_wrongs
                 total_unanswereds += field_unanswereds
@@ -357,6 +391,7 @@ def calculate_result(user_id, sheet_id, exam_id):
 
 
 def get_joined_result_data(student_id):
+    """ get combined result and exam information to display on student dashboard. """
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
