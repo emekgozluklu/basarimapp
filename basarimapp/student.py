@@ -4,7 +4,7 @@ from basarimapp.forms import EnterExamCodeForm
 from basarimapp.exam import EXAM_TYPE_FIELDS, EXAM_TYPES, validate_answersheet_form
 from basarimapp.dbmanager import (
     add_choices_to_answersheet, get_exam_by_code, create_answersheet_template, calculate_result,
-    get_joined_result_data
+    get_joined_result_data, get_field_results_of_student
 )
 import functools
 
@@ -92,3 +92,36 @@ def fill_sheet():
         else:
             flash("Form is corrupted. Fill again.")
             return render_template("student/answersheet.html", data=template_data)
+
+
+@bp.route('/lectures')
+@login_required
+def lectures():
+    error = None
+    load_logged_in_user()
+
+    last_week, last_month, general = get_field_results_of_student(session["user_id"])
+
+    lecture_names_month = [i[0] for i in last_month]
+    lecture_names_week = [i[0] for i in last_week]
+
+    query_size = len(last_month[0])
+
+    # fill empty lectures
+    for lec in lecture_names_month:
+        if lec not in lecture_names_week:
+            last_week.append([lec] + [0 for _ in range(query_size - 1)])
+
+    num_of_lectures = len(last_month)
+
+    for i in range(num_of_lectures):
+        if last_month[i][0] != last_week[i][0]:
+            raise Exception("There is something wrong with orders. ")
+
+    data = {
+        "last_week": sorted(last_week),
+        "last_month": sorted(last_month),
+        "num_of_lectures": num_of_lectures,
+        "general": general
+    }
+    return render_template('student/lectures.html', data=data, error=error)
