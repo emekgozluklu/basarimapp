@@ -2,7 +2,10 @@ from flask import Blueprint, flash, g, redirect, render_template, request, sessi
 from basarimapp.auth import load_logged_in_user, login_required
 from basarimapp.forms import EnterExamCodeForm
 from basarimapp.exam import EXAM_TYPE_FIELDS, EXAM_TYPES, validate_answersheet_form
-from basarimapp.dbmanager import get_results_of_student, add_choices_to_answersheet, get_exam_by_code, create_answersheet_template, calculate_result
+from basarimapp.dbmanager import (
+    get_results_of_student, add_choices_to_answersheet, get_exam_by_code, create_answersheet_template, calculate_result,
+    get_joined_result_data
+)
 import functools
 
 
@@ -14,8 +17,8 @@ bp = Blueprint('student', __name__, url_prefix='/student')
 @login_required
 def dashboard():
     load_logged_in_user()
-    results = get_results_of_student(session["user_id"])
-    return render_template('student/dashboard.html', results=results)
+    results = get_joined_result_data(session["user_id"])
+    return render_template('student/dashboard.html', results=results, exam_types=EXAM_TYPES)
 
 
 @bp.route("/code", methods=('GET', 'POST'))

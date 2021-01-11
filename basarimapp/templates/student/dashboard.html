@@ -1,7 +1,6 @@
  {% extends 'layout.html' %}
 {% set active_page = "dashboard" %}
 
-
 {% block title %}
 Admin Dashboard
 {% endblock %}
@@ -28,43 +27,36 @@ Admin Dashboard
     </div>
 {% endif %}
 
-<table class="table" id="publishers" width="100%">
+<table class="table" id="results" width="100%">
 
     <thead>
         <tr>
-            <th>Title</th>
+            <th>Exam Title</th>
+            <th>Type</th>
             <th>Publisher</th>
-            <th>Exam Type</th>
-            <th>Correct Answers</th>
-            <th>Wrong Answers</th>
-            <th>Empties</th>
-            <th>Net Score</th>
-            <th>Percentage</th>
+            <th> &#10004; </th>
+            <th> &#10060; </th>
+            <th> &#9675; </th>
+            <th>Net</th>
+            <th>Score</th>
+            <th> <b>%</b> </th>
+            <th>Uploaded at</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-
-            <td>Placeholder Exam</td>
-            <td>Something Press</td>
-            <td>YGS</td>
-            <td>141</td>
-            <td>15</td>
-            <td>137.25</td>
-            <td>%0.02</td>
-        </tr>
 
     {% for res in results %}
         <tr>
-            <td> {{ res[2] }} {#{{ exam_title }}#}</td>
-            <td> --- {#{{ exam_pub }}#}</td>
-            <td> --- {#{{ exam_type }}#}</td>
-            <td>{{ res[4] }}</td>
-            <td>{{ res[5] }}</td>
-            <td>{{ res[6] }}</td>
-            <td>{{ res[7] }}</td>
-            <td>---</td>
-
+            <td> {{ res[0] }} </td>
+            <td> {{ exam_types[(res[1])][1] }} </td>
+            <td> {{ res[2] }} </td>
+            <td> {{ res[3] }} </td>
+            <td> {{ res[4] }} </td>
+            <td> {{ res[5] }} </td>
+            <td> {{ res[6] }} </td>
+            <td> {{ res[7] }} </td>
+            <td> #{#{{ percentage }}#} </td>
+            <td> {{ res[8].strftime("%d-%m-%Y %H:%M") }} </td>
         </tr>
     {%endfor%}
 
