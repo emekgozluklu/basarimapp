@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS EXAM (
 
 CREATE TABLE IF NOT EXISTS ANSWERSHEET (
   id serial primary key,
-  userrole_id integer references USERROLE (id) ON DELETE CASCADE,
+  userrole_id integer references USERROLE (id) ON DELETE SET NULL ,
   exam_id integer references EXAM (id) ON DELETE SET NULL,
   answers text default '{}',
   upload_time timestamp (6) with time zone not null default now()
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS EXAMFIELD (
 CREATE TABLE IF NOT EXISTS RESULT (
   id serial primary key,
   userrole_id integer references USERROLE (id) ON DELETE SET NULL,
-  exam_id integer references EXAM (id) ON DELETE NO ACTION,
+  exam_id integer references EXAM (id) ON DELETE SET NULL ,
   sheet_id integer references ANSWERSHEET (id) ON DELETE CASCADE,
   corrects integer not null default 0,
   wrongs integer not null default 0,
