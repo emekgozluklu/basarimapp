@@ -3,6 +3,10 @@ EXAM_TYPES = [
     (1, 'LYS1'),
     (2, 'LYS2'),
     (3, 'LYS3'),
+    (4, 'Quiz Maths'),
+    (5, 'Quiz Science'),
+    (6, 'Quiz Language'),
+    (7, 'Quiz Social'),
 ]
 
 EXAM_TYPE_FIELDS = [
@@ -25,8 +29,16 @@ EXAM_TYPE_FIELDS = [
         "Science": 30,
     },
     {
-        "Native Language": 50,
-        "Foreign Language": 30,
+        "Mathematics": 10,
+    },
+    {
+        "Science": 10,
+    },
+    {
+        "Native Language": 10,
+    },
+    {
+        "Social Sciences": 10,
     },
 ]
 

@@ -5,7 +5,7 @@ from basarimapp.dbmanager import (
 )
 from basarimapp.auth import load_logged_in_user
 from basarimapp.forms import AddExamForm
-from basarimapp.exam import EXAM_TYPE_FIELDS, validate_exam_field_form
+from basarimapp.exam import EXAM_TYPE_FIELDS, validate_exam_field_form, EXAM_TYPES
 import functools
 
 
@@ -31,7 +31,7 @@ def publisher_login_required(view):
 def dashboard():
     exams = get_exams(session["user_id"])
     load_logged_in_user()
-    return render_template('publisher/dashboard.html', exams=exams)
+    return render_template('publisher/dashboard.html', exams=exams, exam_types=EXAM_TYPES)
 
 
 @bp.route('/add_exam', methods=('GET', 'POST'))
