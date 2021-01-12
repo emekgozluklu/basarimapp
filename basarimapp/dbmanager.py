@@ -82,7 +82,9 @@ INNER JOIN exam
 INNER JOIN userrole AS pub
     ON exam.publisher_id = pub.id
 WHERE
-      stu.id = %s;
+      stu.id = %s
+ORDER BY
+    result.upload_time DESC;
 """
 
 NUM_OF_UPLOADED_EXAMS_TODAY = """
@@ -243,7 +245,7 @@ def get_publishers():
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM userrole WHERE is_publisher = %s", ('true',))
+            cur.execute("SELECT * FROM userrole WHERE is_publisher = %s ORDER BY reg_date DESC;", ('true',))
             res = cur.fetchall()
     return res
 
@@ -253,7 +255,7 @@ def get_exams(pub_id):
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM exam WHERE publisher_id = %s;", (pub_id,))
+            cur.execute("SELECT * FROM exam WHERE publisher_id = %s ORDER BY upload_time DESC;", (pub_id,))
             res = cur.fetchall()
     return res
 
@@ -335,7 +337,7 @@ def get_results_of_student(student_id):
     url = current_app.config['DATABASE']
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM result WHERE userrole_id = %s;", (student_id, ))
+            cur.execute("SELECT * FROM result WHERE userrole_id = %s ORDER BY upload_time DESC;", (student_id, ))
             res = cur.fetchall()
     return res
 
