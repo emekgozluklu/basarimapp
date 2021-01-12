@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}">
     {% block more_css %} {% endblock %}
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+    <link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 
 
@@ -21,37 +27,37 @@
                 {%  if session.user_is_admin %}
                     <ul class="navbar-nav">
                         <li class="nav-item {{ 'active' if active_page == 'dashboard' else '' }}">
-                            <a class="nav-link" href="{{ url_for("admin.dashboard") }}">Dashboard <span class="sr-only"></span></a>
+                            <h5><a class="nav-link" href="{{ url_for("admin.dashboard") }}">Dashboard <span class="sr-only"></span></a></h5>
                         </li>
                         <li class="nav-item {{ 'active' if active_page == 'new_publisher' else '' }}">
-                            <a class="nav-link" href="{{ url_for("admin.add_publisher") }}">New Publisher <span class="sr-only"></span></a>
+                            <h5><a class="nav-link" href="{{ url_for("admin.add_publisher") }}">New Publisher <span class="sr-only"></span></a></h5>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a>
+                            <h5><a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a></h5>
                         </li>
                     </ul>
                 {% elif session.user_is_publisher %}
                     <ul class="navbar-nav">
                         <li class="nav-item {{ 'active' if active_page == 'dashboard' else '' }}">
-                            <a class="nav-link" href="{{ url_for("publisher.dashboard") }}">Dashboard <span class="sr-only"></span></a>
+                            <h5><a class="nav-link" href="{{ url_for("publisher.dashboard") }}">Dashboard <span class="sr-only"></span></a></h5>
                         </li>
                         <li class="nav-item {{ 'active' if active_page == 'new_exam' else '' }}">
-                            <a class="nav-link" href="{{ url_for("publisher.add_exam") }}">Add New Exam <span class="sr-only"></span></a>
+                            <h5><a class="nav-link" href="{{ url_for("publisher.add_exam") }}">Add New Exam <span class="sr-only"></span></a></h5>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a>
+                            <h5><a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a></h5>
                         </li>
                     </ul>
                 {% else %}
                     <ul class="navbar-nav">
                         <li class="nav-item {{ 'active' if active_page == 'dashboard' else '' }}">
-                            <a class="nav-link" href="{{ url_for("student.dashboard") }}">Dashboard <span class="sr-only"></span></a>
+                            <h5><a class="nav-link" href="{{ url_for("student.dashboard") }}">Dashboard <span class="sr-only"></span></a></h5>
                         </li>
                         <li class="nav-item {{ 'active' if active_page == 'exams' else '' }}">
-                            <a class="nav-link" href="{{ url_for("student.exams") }}">Exams <span class="sr-only"></span></a>
+                            <h5><a class="nav-link" href="{{ url_for("student.exams") }}">Exams <span class="sr-only"></span></a></h5>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a>
+                            <h5><a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a></h5>
                         </li>
                     </ul>
                 {% endif %}
@@ -59,13 +65,13 @@
             {% else %}
                 <ul class="navbar-nav">
                     <li class="nav-item {{ 'active' if active_page == 'homepage' else '' }}">
-                        <a class="nav-link" href="{{ url_for("index") }}">Homepage <span class="sr-only"></span></a>
+                        <h5><a class="nav-link" href="{{ url_for("index") }}">Homepage <span class="sr-only"></span></a></h5>
                     </li>
                     <li class="nav-item {{ 'active' if active_page == 'login' else '' }}">
-                        <a class="nav-link" href="{{ url_for("auth.login") }}">Login <span class="sr-only"></span></a>
+                        <h5><a class="nav-link" href="{{ url_for("auth.login") }}">Login <span class="sr-only"></span></a></h5>
                     </li>
                     <li class="nav-item {{ 'active' if active_page == 'register' else '' }}">
-                        <a class="nav-link" href="{{ url_for("auth.register") }}">Register <span class="sr-only"></span></a>
+                        <h5><a class="nav-link" href="{{ url_for("auth.register") }}">Register <span class="sr-only"></span></a></h5>
                     </li>
                 </ul>
             {% endif %}

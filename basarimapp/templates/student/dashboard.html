@@ -22,7 +22,7 @@ Lectures Report
       <div class="row" >
 
         <main role="main" class="col-md ml-sm-auto col-lg" style="margin-top: 20px;">
-            <h1 class="h2">Dashboard</h1><hr/>
+            <h1 class="h2">Dashboard<a href="{{ url_for("student.enter_code") }}" class="btn btn-success float-right" role="button">Load New Exam</a></h1><hr/>
 
             <div class="card" style="padding: 5%;">
             {% if error %}

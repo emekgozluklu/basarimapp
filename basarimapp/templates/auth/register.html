@@ -5,13 +5,13 @@
 Register
 {% endblock %}
 
-{% block header %}
-<h1>Join Us!</h1>
-{% endblock %}
-
 {% from "macro.html" import render_field %}
 
 {% block content %}
+     <div class="container">
+        <main role="main" class="col-md ml-sm-auto col-lg" style="margin-top: 20px;">
+            <h1 class="h2">Join us!</h1><hr/>
+
     {% if error %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
           <strong>Whoops!</strong> {{ error }}
@@ -27,7 +27,9 @@ Register
     {{ render_field(form.email, placeholder="Email") }}
     {{ render_field(form.password, placeholder="Password") }}
     {{ render_field(form.confirm, placeholder="Password (again)") }}
-    <p><input class="btn btn-default btn-submit" type="submit" value="Register"></p>
+    <p><input class="btn btn-dark btn-submit" type="submit" value="Register"></p>
 </form>
+        </main>
+     </div>
 
 {% endblock %}

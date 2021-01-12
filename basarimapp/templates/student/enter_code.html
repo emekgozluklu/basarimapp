@@ -30,7 +30,7 @@
             <form id="EnterExamCodeForm" class="form" method="POST" action="{{ url_for("student.enter_code") }}" role="form">
                 {{ form.hidden_tag() }}
                 {{ render_field(form.code, placeholder="Exam Code:") }}
-                <p><input class="btn btn-default btn-submit" type="submit" value="Start to fill answers..."></p>
+                <p><input class="btn btn-dark btn-submit" type="submit" value="Start to fill answers..."></p>
             </form>
         </div>
 
