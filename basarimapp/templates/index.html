@@ -9,34 +9,33 @@ Main Page
 {% endblock %}
 
 {% block content %}
-<div class="position-relative overflow-hidden p-3  m-md-3 text-center bg-dark" style="width: 100%;">
-      <div class="col-md-5 mx-auto my-5">
+<div class="row bg-dark" style="width: 100%; margin-top: 10px;">
+      <div class="col-md-5 mx-auto my-2 text-center" id="indexHeaderRow">
           <img src="{{url_for('static', filename='images/logo.png')}}" style="width: 30%;" alt="...">
-          <h1 class="display-4  font-weight-normal" style="color:ghostwhite">başarım</h1>
+          <h1 class="display-4  font-weight-normal " style="color:ghostwhite">başarım</h1>
         <p class="lead font-weight-normal" style="color:ghostwhite">for those who want more.</p>
-        <a class="btn btn-outline-secondary" href="{{ url_for("auth.register") }}" style="color:ghostwhite">Join</a>
+        <a class="btn btn-outline-light" href="{{ url_for("auth.register") }}" style="color:ghostwhite">Join</a>
       </div>
 </div>
-<div class="container marketing">
-       <div class="row text-center">
+
+       <div class="row text-center" id="carouselIndex">
           <div class="col-lg-4">
-            <img class="rounded-circle" src="{{url_for('static', filename='images/logo.png')}}" alt="Generic placeholder image" width="140" height="140">
-            <h2>Students</h2>
-            <p>Why students should come!</p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+            <i class="icon-book-open primary font-large-4 mr-2"></i><hr/>
+            <h2>Buy the exam!</h2>
+            <p>Buy the printed exams from your local stationery  or Basarim Online Shop. Check if the exam you are buying
+            is registered to our system.</p>
           </div><!-- /.col-lg-4 -->
           <div class="col-lg-4">
-            <img class="rounded-circle" src="{{url_for('static', filename='images/logo.png')}}" alt="Generic placeholder image" width="140" height="140">
-            <h2>Publisher</h2>
-            <p>Why publishers should come!</p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+            <i class="icon-note primary font-large-4 mr-2"></i><hr/>
+            <h2>Solve the exam!</h2>
+            <p>Solve the exam you bought. We know you will not cheat and obey the time restrictions. It is to track
+            you. Only you are seeing it. So, there is no reason to fake it.</p>
           </div><!-- /.col-lg-4 -->
           <div class="col-lg-4">
-            <img class="rounded-circle" src="{{url_for('static', filename='images/logo.png')}}" alt="Generic placeholder image" width="140" height="140">
-            <h2>Publisher</h2>
-            <p>Why publishers should come!</p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+            <i class="icon-note primary font-large-4 mr-2"></i><hr/>
+            <h2>Upload the exam!</h2>
+            <p>Enter exam code and upload your choices to the system. Once you submit, system will automatically calculate
+            your result and show you in your dashboard.</p>
           </div><!-- /.col-lg-4 -->
        </div>
-</div>
 {% endblock %}

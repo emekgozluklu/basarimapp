@@ -2,8 +2,8 @@
 <head>
     <title>{% block title %}{% endblock %} - Başarım </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}">
     {% block more_css %} {% endblock %}
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -27,37 +27,37 @@
                 {%  if session.user_is_admin %}
                     <ul class="navbar-nav">
                         <li class="nav-item {{ 'active' if active_page == 'dashboard' else '' }}">
-                            <h5><a class="nav-link" href="{{ url_for("admin.dashboard") }}">Dashboard <span class="sr-only"></span></a></h5>
+                            <a class="nav-link" href="{{ url_for("admin.dashboard") }}">Dashboard <span class="sr-only"></span></a>
                         </li>
                         <li class="nav-item {{ 'active' if active_page == 'new_publisher' else '' }}">
-                            <h5><a class="nav-link" href="{{ url_for("admin.add_publisher") }}">New Publisher <span class="sr-only"></span></a></h5>
+                            <a class="nav-link" href="{{ url_for("admin.add_publisher") }}">New Publisher <span class="sr-only"></span></a>
                         </li>
                         <li class="nav-item">
-                            <h5><a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a></h5>
+                            <a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a>
                         </li>
                     </ul>
                 {% elif session.user_is_publisher %}
                     <ul class="navbar-nav">
                         <li class="nav-item {{ 'active' if active_page == 'dashboard' else '' }}">
-                            <h5><a class="nav-link" href="{{ url_for("publisher.dashboard") }}">Dashboard <span class="sr-only"></span></a></h5>
+                            <a class="nav-link" href="{{ url_for("publisher.dashboard") }}">Dashboard <span class="sr-only"></span></a>
                         </li>
                         <li class="nav-item {{ 'active' if active_page == 'new_exam' else '' }}">
-                            <h5><a class="nav-link" href="{{ url_for("publisher.add_exam") }}">Add New Exam <span class="sr-only"></span></a></h5>
+                            <a class="nav-link" href="{{ url_for("publisher.add_exam") }}">Add New Exam <span class="sr-only"></span></a>
                         </li>
                         <li class="nav-item">
-                            <h5><a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a></h5>
+                            <a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a>
                         </li>
                     </ul>
                 {% else %}
                     <ul class="navbar-nav">
                         <li class="nav-item {{ 'active' if active_page == 'dashboard' else '' }}">
-                            <h5><a class="nav-link" href="{{ url_for("student.dashboard") }}">Dashboard <span class="sr-only"></span></a></h5>
+                            <a class="nav-link" href="{{ url_for("student.dashboard") }}">Dashboard <span class="sr-only"></span></a>
                         </li>
                         <li class="nav-item {{ 'active' if active_page == 'exams' else '' }}">
-                            <h5><a class="nav-link" href="{{ url_for("student.exams") }}">Exams <span class="sr-only"></span></a></h5>
+                            <a class="nav-link" href="{{ url_for("student.exams") }}">Exams <span class="sr-only"></span></a>
                         </li>
                         <li class="nav-item">
-                            <h5><a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a></h5>
+                            <a class="nav-link" href="{{ url_for("auth.logout") }}">Log out </a>
                         </li>
                     </ul>
                 {% endif %}
@@ -65,13 +65,13 @@
             {% else %}
                 <ul class="navbar-nav">
                     <li class="nav-item {{ 'active' if active_page == 'homepage' else '' }}">
-                        <h5><a class="nav-link" href="{{ url_for("index") }}">Homepage <span class="sr-only"></span></a></h5>
+                        <a class="nav-link" href="{{ url_for("index") }}">Homepage <span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item {{ 'active' if active_page == 'login' else '' }}">
-                        <h5><a class="nav-link" href="{{ url_for("auth.login") }}">Login <span class="sr-only"></span></a></h5>
+                        <a class="nav-link" href="{{ url_for("auth.login") }}">Login <span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item {{ 'active' if active_page == 'register' else '' }}">
-                        <h5><a class="nav-link" href="{{ url_for("auth.register") }}">Register <span class="sr-only"></span></a></h5>
+                        <a class="nav-link" href="{{ url_for("auth.register") }}">Register <span class="sr-only"></span></a>
                     </li>
                 </ul>
             {% endif %}
@@ -82,9 +82,7 @@
 <section class="content">
  <div class="container">
 
-   <div class="container">
     {% block header %}{% endblock %}
-   </div>
 
    {% for message in get_flashed_messages() %}
      <div class="flash">{{ message }}</div>
@@ -95,3 +93,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
  </div>
 </section>
+
+<footer class="container py-5 text-center">
+    <p> Basarim App. <span class="copyleft">&copy;</span></p>
+</footer>
