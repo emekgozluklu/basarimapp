@@ -1,14 +1,20 @@
 # Başarım Succes Tracker Application
 
 Public web application of Başarım Success Tracker. It helps student to achieve their goals.
+This project is developed to prototype an idea and to pass BLG 317E Database Systems course
+at Istanbul Technical University.
 
 INSTALL
 -------
-* Clone project from git
-* Create virtual environment
+* Clone project from git `git clone git@github.com:emekgozluklu/basarimapp.git`
+* Create virtual environment `python -m venv venv`
 * Switch to virtual environment
-* Install requirements
-* Run application
+    - Windows: `.\venv\Scripts\activate`
+    - Gnu/Linux: `source venv/bin/activate`
+* Install requirements `pip install -r requirements.txt`
+* Copy .env.template file as .env and set your own system parameters
+* Run settings.py `python settings.py`
+* Run application `flask run`
 
 LICENSE
 -------
@@ -28,4 +34,3 @@ Authors
 -------
 
 * Emek Gözlüklü - gozluklu16@itu.edu.tr
-
