@@ -24,5 +24,5 @@ def deinit(url):
 
 if __name__ == "__main__":
     url = config("DATABASE_URL")
-    deinit(url)
+    # deinit(url)
     initialize(url)
