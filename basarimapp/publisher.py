@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 from basarimapp.dbmanager import (
     get_exams, create_exam_template, create_examfield, activate_exam, get_publisher_of_exam,
-    deactivate_exam
+    deactivate_exam, get_profile_info_of_publisher, get_publisher_by_id
 )
 from basarimapp.auth import load_logged_in_user
 from basarimapp.forms import AddExamForm
@@ -130,3 +130,27 @@ def activate(exam_id):
     else:
         activate_exam(exam_id)
         return redirect(url_for("publisher.dashboard"))
+
+
+@bp.route('/profile')
+@publisher_login_required
+def profile():
+
+    pub = get_publisher_by_id(session["user_id"])
+
+    if pub is None:
+        abort(404)
+
+    info = get_profile_info_of_publisher(session["user_id"])
+
+    data = {
+        "name": info[0],
+        "email": info[1],
+        "reg_date": info[2],
+        "exam_count": info[3],
+        "sheet_count": info[4],
+        "corrects": info[5],
+        "questions": info[6],
+    }
+
+    return render_template("publisher/profile.html", data=data)

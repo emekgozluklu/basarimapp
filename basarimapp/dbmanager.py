@@ -153,6 +153,30 @@ GROUP BY
     e.field_name;
 """
 
+GET_PUBLISHER_DETAIL_INFO_STATEMENT = """
+SELECT
+    p.first_name,
+    p.email,
+    p.reg_date,
+    count(DISTINCT e.id) as exam_count,
+    count(DISTINCT a.id) as sheet_count,
+    sum(r.corrects) as corrects,
+    sum(r.corrects) + sum(r.wrongs) + sum(r.unanswereds) as questions
+FROM
+    userrole AS p
+FULL JOIN exam AS e
+    ON e.publisher_id = p.id
+FULL JOIN answersheet AS a
+    ON e.id = a.exam_id
+FULL JOIN result AS r
+    ON a.id = r.sheet_id
+WHERE p.id = %s
+GROUP BY
+         p.first_name,
+         p.email,
+         p.reg_date;
+"""
+
 
 def del_db(app):
     """ Drop all tables in database. """
@@ -483,3 +507,21 @@ def get_field_results_of_student(student_id):
             cur.execute(GET_FIELD_RESULTS_STATEMENT, (student_id,))
             general = cur.fetchone()
     return last_week, last_month, general
+
+
+def get_publisher_by_id(publisher_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM userrole WHERE is_publisher = %s AND id=%s;", ('true', publisher_id))
+            res = cur.fetchone()
+    return res
+
+
+def get_profile_info_of_publisher(publisher_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute(GET_PUBLISHER_DETAIL_INFO_STATEMENT, (publisher_id, ))
+            res = cur.fetchone()
+    return res
