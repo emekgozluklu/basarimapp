@@ -32,7 +32,6 @@ Admin Dashboard
 
     <thead>
         <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>E-mail</th>
             <th>Added Exams</th>
@@ -46,8 +45,9 @@ Admin Dashboard
     {% for pub in publishers %}
         <tr>
             {% set pub_id = pub[0] %}
-            <td>{{ pub_id }}</td>
-            <td>{{ pub[1] + " " + pub[2] }}</td>
+            <td style="font-weight: 600; font-size: 1.2rem;">
+                <a href="{{ url_for("admin.publisher_detail", publisher_id=pub_id) }}">{{ pub[1] + " " + pub[2] }}</a>
+            </td>
             <td>{{ pub[3] }}</td>
             <td>{{ exam_count[pub_id] }}</td>
             <td>{{ pub[8].strftime("%d-%m-%Y %H:%M") }}</td>

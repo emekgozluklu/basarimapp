@@ -1,0 +1,99 @@
+{% extends 'layout.html' %}
+{% set active_page = "exam_detail" %}
+
+{% block title %}
+Profile - {{ data.name }}
+{% endblock %}
+
+{% block more_css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/detail.css") }}">
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container" style="margin-top: 20px;">
+    <div class="team-single">
+        <div class="row">
+            <div class="col-lg-4 col-md-5 xs-margin-30px-bottom">
+                <div class="bg-light-gray padding-30px-all md-padding-25px-all sm-padding-20px-all text-center">
+                    <h4 class="margin-10px-bottom font-size24 md-font-size22 sm-font-size20 font-weight-600">Contact</h4>
+                    <p class="sm-width-95 sm-margin-auto"> {{ data.email }} </p>
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-7">
+                <div class="team-single-text padding-50px-left sm-no-padding-left">
+                    <h4 class="font-size38 sm-font-size32 xs-font-size30">{{ data.name }}</h4>
+                    <div class="contact-info-section margin-40px-tb">
+                        <ul class="list-style9 no-margin">
+                            <li>
+
+                                <div class="row">
+                                    <div class="col-md-5 col-5">
+                                        <i class="icon-note text-orange font-medium-2 mr-2"></i>
+                                        <strong class="margin-10px-left text-orange">Number of exams:</strong>
+                                    </div>
+                                    <div class="col-md-7 col-7">
+                                        <p>{{ data.exam_count }}</p>
+                                    </div>
+                                </div>
+
+                            </li>
+                            <li>
+
+                                <div class="row">
+                                    <div class="col-md-5 col-5">
+                                        <i class="icon-trash text-green font-medium-2 mr-2"></i>
+                                        <strong class="margin-10px-left text-green">Registration: </strong>
+                                    </div>
+                                    <div class="col-md-7 col-7">
+                                        <p>{{ data.reg_date.strftime('%b %d, %Y.') }}</p>
+                                    </div>
+                                </div>
+
+                            </li>
+                            <li>
+
+                                <div class="row">
+                                    <div class="col-md-5 col-5">
+                                        <i class="icon-pencil text-lightred font-medium-2 mr-2"></i>
+                                        <strong class="margin-10px-left text-lightred">Uploaded Sheets:</strong>
+                                    </div>
+                                    <div class="col-md-7 col-7">
+                                        <p>{{ data.sheet_count }}</p>
+                                    </div>
+                                </div>
+
+                            </li>
+
+                        </ul>
+                    </div>
+                    <hr>
+                    <div style="margin-top: 20px;">
+                    <h5 class="font-size24 sm-font-size22 xs-font-size20">Metrics</h5>
+
+                    <div class="sm-no-margin">
+                        <div class="progress-text">
+                            <div class="row">
+                                {% set percentage = "%.2f"|format(data.corrects*100 / data.questions) %}
+                                <div class="col-5">Correctness of uploaded sheets: </div>
+                                <div class="col-7 text-left"><b>{{ percentage }}%</b></div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

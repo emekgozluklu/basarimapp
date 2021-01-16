@@ -1,6 +1,7 @@
-from flask import Blueprint, flash, redirect, render_template, session, url_for
+from flask import Blueprint, flash, redirect, render_template, session, url_for, abort
 from basarimapp.dbmanager import (
-    register_publisher, get_publishers, get_user_by_email, get_exams, delete_publisher, get_user_by_id
+    register_publisher, get_publishers, get_user_by_email, get_exams, delete_publisher, get_user_by_id,
+    get_profile_info_of_publisher, get_publisher_by_id
 )
 from basarimapp.auth import load_logged_in_user
 from basarimapp.forms import AddPublisherForm
@@ -72,3 +73,26 @@ def delete_publisher_view(publisher_id):
         delete_publisher(publisher_id)
         flash(f"Publisher with ID {publisher_id} is deleted!")
         return redirect(url_for("admin.dashboard"))
+
+
+@bp.route('/publisher/<publisher_id>')
+@admin_login_required
+def publisher_detail(publisher_id):
+    pub = get_publisher_by_id(publisher_id)
+
+    if pub is None:
+        abort(404)
+
+    info = get_profile_info_of_publisher(publisher_id)
+
+    data = {
+        "name": info[0],
+        "email": info[1],
+        "reg_date": info[2],
+        "exam_count": info[3],
+        "sheet_count": info[4],
+        "corrects": info[5],
+        "questions": info[6],
+    }
+
+    return render_template("admin/publisher_detail.html", data=data)
