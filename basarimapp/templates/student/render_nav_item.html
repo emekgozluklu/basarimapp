@@ -10,7 +10,11 @@
                                       <i class="icon-check success font-large-2 float-left"></i>
                                     </div>
                                     <div class="media-body text-right">
-                                      <h3>{{ "%0.2f"| format(100 * weekly_lecture_data[2] / weekly_lecture_data[5]) }} %</h3>
+                                        {% if weekly_lecture_data[5] %}
+                                            <h3>{{ "%0.2f"| format(100 * weekly_lecture_data[2] / weekly_lecture_data[5]) }} %</h3>
+                                        {% else %}
+                                            <h3>0 %</h3>
+                                        {% endif %}
                                       <span>Correct Answers Ratio</span>
                                     </div>
                                   </div>
@@ -27,8 +31,12 @@
                                       <i class="icon-close danger font-large-2 float-left"></i>
                                     </div>
                                     <div class="media-body text-right">
-                                      <h3>{{ "%0.2f"| format(100 * weekly_lecture_data[3] / weekly_lecture_data[5]) }} %</h3>
-                                      <span>Wrong Answers Ratio</span>
+                                        {% if weekly_lecture_data[5] %}
+                                            <h3>{{ "%0.2f"| format(100 * weekly_lecture_data[3] / weekly_lecture_data[5]) }} %</h3>
+                                        {% else %}
+                                            <h3>0 %</h3>
+                                        {% endif %}
+                                        <span>Wrong Answers Ratio</span>
                                     </div>
                                   </div>
                                 </div>

@@ -115,18 +115,19 @@ def dashboard():
     # fill empty lectures
     for lec in lecture_names_month:
         if lec not in lecture_names_week:
-            last_week.append([lec] + [0 for _ in range(query_size - 1)])
+            last_week.append(tuple([lec] + [0 for _ in range(query_size - 1)]))
 
     num_of_lectures = len(last_month)
 
-    for i in range(num_of_lectures):
-        if last_month[i][0] != last_week[i][0]:
-            raise Exception("There is something wrong with orders. ")
-
     data = {
-        "last_week": sorted(last_week),
-        "last_month": sorted(last_month),
+        "last_week": sorted(last_week, key=lambda x: x[0]),
+        "last_month": sorted(last_month, key=lambda x: x[0]),
         "num_of_lectures": num_of_lectures,
         "general": general
     }
+    print(sorted(last_week, key=lambda x: x[0]), sorted(last_month, key=lambda x: x[0]))
+    for i in range(num_of_lectures):
+        if data["last_month"][i][0] != data["last_week"][i][0]:
+            raise Exception("There is something wrong with orders. ")
+
     return render_template('student/dashboard.html', data=data, error=error)
