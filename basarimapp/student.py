@@ -4,7 +4,8 @@ from basarimapp.forms import EnterExamCodeForm
 from basarimapp.exam import EXAM_TYPE_FIELDS, EXAM_TYPES, validate_answersheet_form
 from basarimapp.dbmanager import (
     add_choices_to_answersheet, get_exam_by_code, create_answersheet_template, calculate_result,
-    get_joined_result_data, get_field_results_of_student, get_result_by_id, activate_result, deactivate_result
+    get_joined_result_data, get_field_results_of_student, get_result_by_id, activate_result, deactivate_result,
+    delete_result_from_database
 )
 import functools
 
@@ -161,3 +162,20 @@ def activate(result_id):
     else:
         activate_result(result_id)
         return redirect(url_for("student.exams"))
+
+
+@bp.route('/delete_result/<result_id>')
+@login_required
+def delete_result(result_id):
+
+    res = get_result_by_id(session["user_id"], result_id)
+
+    if res is None:
+        flash("Nu such result!")
+        return redirect(url_for("student.exams"))
+
+    else:
+        delete_result_from_database(result_id)
+        flash(f"Result with ID {result_id} is deleted!")
+        return redirect(url_for("student.exams"))
+

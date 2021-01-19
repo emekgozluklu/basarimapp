@@ -571,3 +571,12 @@ def delete_exam_from_database(exam_id):
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
             cur.execute("DELETE FROM exam WHERE id = %s ;", (exam_id, ))
+
+
+def delete_result_from_database(result_id):
+    """ delete exam from system with all its examexamfields. """
+
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM result WHERE id = %s ;", (result_id, ))
