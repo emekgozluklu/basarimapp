@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 from basarimapp.dbmanager import (
     get_exams, create_exam_template, create_examfield, activate_exam, get_publisher_of_exam,
-    deactivate_exam, get_profile_info_of_publisher, get_publisher_by_id
+    deactivate_exam, get_profile_info_of_publisher, get_publisher_by_id, get_exam_by_id, delete_exam_from_database
 )
 from basarimapp.auth import load_logged_in_user
 from basarimapp.forms import AddExamForm
@@ -154,3 +154,20 @@ def profile():
     }
 
     return render_template("publisher/profile.html", data=data)
+
+
+@bp.route('/delete_exam/<exam_id>')
+@publisher_login_required
+def delete_exam(exam_id):
+
+    exam = get_exam_by_id(exam_id)
+
+    if exam is None:
+        flash("Publisher not exists.!")
+        return redirect(url_for("publisher.dashboard"))
+
+    else:
+        delete_exam_from_database(exam_id)
+        flash(f"Exam with ID {exam_id} is deleted!")
+        return redirect(url_for("publisher.dashboard"))
+

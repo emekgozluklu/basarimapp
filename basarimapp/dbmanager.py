@@ -525,3 +525,21 @@ def get_profile_info_of_publisher(publisher_id):
             cur.execute(GET_PUBLISHER_DETAIL_INFO_STATEMENT, (publisher_id, ))
             res = cur.fetchone()
     return res
+
+
+def get_exam_by_id(exam_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM exam WHERE id = %s", (exam_id,))
+            res = cur.fetchone()
+    return res
+
+
+def delete_exam_from_database(exam_id):
+    """ delete exam from system with all its examexamfields. """
+
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM exam WHERE id = %s ;", (exam_id, ))
