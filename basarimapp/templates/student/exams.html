@@ -41,6 +41,7 @@ Admin Dashboard
             <th>Score</th>
             <th> <b>%</b> </th>
             <th>Uploaded at</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -57,6 +58,17 @@ Admin Dashboard
             <td> {{ res[7] }} </td>
             <td> #{#{{ percentage }}#} </td>
             <td> {{ res[8].strftime("%d-%m-%Y %H:%M") }} </td>
+            <td>
+                {% if res[9] %}
+                    <a href="{{ '/student/deactivate/%d' %res[10] }}" class="btn btn-dark btn-sm" role="button">
+                        DEACTIVATE
+                    </a>
+                {% else %}
+                    <a href="{{ '/student/activate/%d' %res[10] }}" class="btn btn-success btn-sm" role="button">
+                        ACTIVATE
+                    </a>
+                {% endif %}
+            </td>
         </tr>
     {%endfor%}
 

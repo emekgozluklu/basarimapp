@@ -4,7 +4,7 @@ from basarimapp.forms import EnterExamCodeForm
 from basarimapp.exam import EXAM_TYPE_FIELDS, EXAM_TYPES, validate_answersheet_form
 from basarimapp.dbmanager import (
     add_choices_to_answersheet, get_exam_by_code, create_answersheet_template, calculate_result,
-    get_joined_result_data, get_field_results_of_student
+    get_joined_result_data, get_field_results_of_student, get_result_by_id, activate_result, deactivate_result
 )
 import functools
 
@@ -131,3 +131,33 @@ def dashboard():
             raise Exception("There is something wrong with orders. ")
 
     return render_template('student/dashboard.html', data=data, error=error)
+
+
+@bp.route('/deactivate/<result_id>')
+@login_required
+def deactivate(result_id):
+    is_active = get_result_by_id(session["user_id"], result_id)
+    if is_active is None:
+        flash("Not permitted!")
+        return redirect(url_for("student.exams"))
+    elif not is_active:
+        flash("Already deactivated!")
+        return redirect(url_for("student.exams"))
+    else:
+        deactivate_result(result_id)
+        return redirect(url_for("student.exams"))
+
+
+@bp.route('/activate/<result_id>')
+@login_required
+def activate(result_id):
+    is_active = get_result_by_id(session["user_id"], result_id)[0]
+    if is_active is None:
+        flash("Not permitted!")
+        return redirect(url_for("student.exams"))
+    elif is_active:
+        flash("Already activated!")
+        return redirect(url_for("student.exams"))
+    else:
+        activate_result(result_id)
+        return redirect(url_for("student.exams"))

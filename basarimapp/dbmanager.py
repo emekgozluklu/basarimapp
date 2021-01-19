@@ -72,7 +72,9 @@ SELECT
     result.unanswereds,
     result.net,
     result.score,
-    result.upload_time
+    result.upload_time,
+    result.is_active,
+    result.id
 FROM
      userrole AS stu
 INNER JOIN result
@@ -328,6 +330,31 @@ def deactivate_exam(exam_id):
     with psycopg2.connect(url) as conn:
         with conn.cursor() as cur:
             cur.execute(DEACTIVATE_EXAM_STATEMENT, (exam_id,))
+
+
+def activate_result(result_id):
+    """ activate result with given result_id """
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("UPDATE result SET is_active = true WHERE id=%s", (result_id,))
+
+
+def deactivate_result(result_id):
+    """ deactivate result with given result_id """
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("UPDATE result SET is_active = false WHERE id=%s", (result_id,))
+
+
+def get_result_by_id(student_id, result_id):
+    url = current_app.config['DATABASE']
+    with psycopg2.connect(url) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT (is_active) FROM result WHERE id = %s AND userrole_id = %s;", (result_id, student_id))
+            res = cur.fetchone()
+    return res
 
 
 def get_publisher_of_exam(exam_id):
