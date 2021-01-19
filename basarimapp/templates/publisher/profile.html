@@ -79,8 +79,11 @@ Profile - {{ data.name }}
                     <div class="sm-no-margin">
                         <div class="progress-text">
                             <div class="row">
-                                {% set percentage = "%.2f"|format(data.corrects / data.questions) %}
-                                <div class="col-5">Correctness of uploaded sheets: </div>
+                                {% if data.question %}
+                                    {% set percentage = "%.2f"|format(data.corrects*100 / data.questions) %}
+                                {% else %}
+                                    {% set percentage = 0 %}
+                                {% endif %}                                <div class="col-5">Correctness of uploaded sheets: </div>
                                 <div class="col-7 text-left"><b>{{ percentage }}</b></div>
                             </div>
                         </div>

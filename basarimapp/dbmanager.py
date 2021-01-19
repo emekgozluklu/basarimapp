@@ -113,7 +113,7 @@ SELECT
     sum(r.corrects)+sum(r.wrongs)+sum(r.unanswereds) AS ques
 FROM
      result AS r
-WHERE userrole_id = %s;
+WHERE userrole_id = %s AND is_active = true AND exam_id is not null;
 """
 
 GET_FIELD_RESULTS_LAST_WEEK = """
@@ -130,7 +130,7 @@ INNER JOIN fieldresult AS f
     ON e.id = f.examfield_id
 INNER JOIN result r
     ON f.result_id = r.id
-WHERE upload_time > now() - interval '1 week' AND userrole_id = %s
+WHERE upload_time > now() - interval '1 week' AND userrole_id = %s AND r.is_active = true AND r.exam_id is not null
 GROUP BY
     e.field_name;
 """
@@ -150,7 +150,7 @@ INNER JOIN fieldresult AS f
     ON e.id = f.examfield_id
 INNER JOIN result r
     ON f.result_id = r.id
-WHERE upload_time > now() - interval '1 month' AND userrole_id = %s
+WHERE upload_time > now() - interval '1 month' AND userrole_id = %s AND r.is_active = true AND r.exam_id is not null
 GROUP BY
     e.field_name;
 """
@@ -533,6 +533,7 @@ def get_field_results_of_student(student_id):
 
             cur.execute(GET_FIELD_RESULTS_STATEMENT, (student_id,))
             general = cur.fetchone()
+    print(last_week, last_month, general)
     return last_week, last_month, general
 
 
