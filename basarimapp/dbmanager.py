@@ -179,6 +179,41 @@ GROUP BY
          p.reg_date;
 """
 
+FIELD_RESULTS_ADDED_THIS_MONTH_BUT_NOT_LAST_WEEK = """
+SELECT
+    e.field_name,
+    count(e.field_name),
+    sum(f.corrects::INTEGER),
+    sum(f.wrongs::INTEGER),
+    sum(f.unanswereds::INTEGER),
+    sum(e.num_of_question)
+FROM
+     examfield AS e
+INNER JOIN fieldresult AS f
+    ON e.id = f.examfield_id
+INNER JOIN result r
+    ON f.result_id = r.id
+WHERE upload_time > now() - interval '1 month' AND userrole_id = %s AND r.is_active = true AND r.exam_id is not null
+GROUP BY
+    e.field_name
+EXCEPT
+SELECT
+    e.field_name,
+    count(e.field_name),
+    sum(f.corrects::INTEGER),
+    sum(f.wrongs::INTEGER),
+    sum(f.unanswereds::INTEGER),
+    sum(e.num_of_question)
+FROM
+     examfield AS e
+INNER JOIN fieldresult AS f
+    ON e.id = f.examfield_id
+INNER JOIN result r
+    ON f.result_id = r.id
+WHERE upload_time > now() - interval '1 week' AND userrole_id = %s AND r.is_active = true AND r.exam_id is not null
+GROUP BY
+    e.field_name;
+"""
 
 def del_db(app):
     """ Drop all tables in database. """
